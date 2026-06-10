@@ -110,6 +110,42 @@ const WC_DATA = {
     {m:72, g:"J", date:"2026-06-27", home:"Algeria", away:"Austria", venue:"Kansas City (Arrowhead Stadium)", time:"21:00", utc:"2026-06-28T02:00Z", hs:null, as:null}
   ],
 
-  // Knockout matches get appended here as the bracket fills in (Round of 32 starts June 28).
-  knockout: []
+  // Knockout bracket (matches 73-104). Slots: 1A=Group A winner, 2B=runner-up,
+  // 3ABCDF=third-place team from one of those groups, W73=winner of match 73, L101=loser of SF1.
+  // Results are recorded directly here: fill hs/as (score after extra time) and w (winner team
+  // name — required, since penalty shootouts mean the higher score does not always advance).
+  knockout: [
+    {m:73, round:"R32", date:"2026-06-28", home:"2A", away:"2B", venue:"Los Angeles (SoFi Stadium)", time:"12:00", utc:"2026-06-28T19:00Z", hs:null, as:null, w:null},
+    {m:74, round:"R32", date:"2026-06-29", home:"1E", away:"3ABCDF", venue:"Boston (Gillette Stadium)", time:"16:30", utc:"2026-06-29T20:30Z", hs:null, as:null, w:null},
+    {m:75, round:"R32", date:"2026-06-29", home:"1F", away:"2C", venue:"Monterrey (Estadio BBVA)", time:"19:00", utc:"2026-06-30T01:00Z", hs:null, as:null, w:null},
+    {m:76, round:"R32", date:"2026-06-29", home:"1C", away:"2F", venue:"Houston (NRG Stadium)", time:"12:00", utc:"2026-06-29T17:00Z", hs:null, as:null, w:null},
+    {m:77, round:"R32", date:"2026-06-30", home:"1I", away:"3CDFGH", venue:"New York/NJ (MetLife Stadium)", time:"17:00", utc:"2026-06-30T21:00Z", hs:null, as:null, w:null},
+    {m:78, round:"R32", date:"2026-06-30", home:"2E", away:"2I", venue:"Dallas (AT&T Stadium)", time:"12:00", utc:"2026-06-30T17:00Z", hs:null, as:null, w:null},
+    {m:79, round:"R32", date:"2026-06-30", home:"1A", away:"3CEFHI", venue:"Mexico City (Estadio Azteca)", time:"19:00", utc:"2026-07-01T01:00Z", hs:null, as:null, w:null},
+    {m:80, round:"R32", date:"2026-07-01", home:"1L", away:"3EHIJK", venue:"Atlanta (Mercedes-Benz Stadium)", time:"12:00", utc:"2026-07-01T16:00Z", hs:null, as:null, w:null},
+    {m:81, round:"R32", date:"2026-07-01", home:"1D", away:"3BEFIJ", venue:"SF Bay Area (Levi's Stadium)", time:"17:00", utc:"2026-07-02T00:00Z", hs:null, as:null, w:null},
+    {m:82, round:"R32", date:"2026-07-01", home:"1G", away:"3AEHIJ", venue:"Seattle (Lumen Field)", time:"13:00", utc:"2026-07-01T20:00Z", hs:null, as:null, w:null},
+    {m:83, round:"R32", date:"2026-07-02", home:"2K", away:"2L", venue:"Toronto (BMO Field)", time:"19:00", utc:"2026-07-02T23:00Z", hs:null, as:null, w:null},
+    {m:84, round:"R32", date:"2026-07-02", home:"1H", away:"2J", venue:"Los Angeles (SoFi Stadium)", time:"12:00", utc:"2026-07-02T19:00Z", hs:null, as:null, w:null},
+    {m:85, round:"R32", date:"2026-07-02", home:"1B", away:"3EFGIJ", venue:"Vancouver (BC Place)", time:"20:00", utc:"2026-07-03T03:00Z", hs:null, as:null, w:null},
+    {m:86, round:"R32", date:"2026-07-03", home:"1J", away:"2H", venue:"Miami (Hard Rock Stadium)", time:"18:00", utc:"2026-07-03T22:00Z", hs:null, as:null, w:null},
+    {m:87, round:"R32", date:"2026-07-03", home:"1K", away:"3DEIJL", venue:"Kansas City (Arrowhead Stadium)", time:"20:30", utc:"2026-07-04T01:30Z", hs:null, as:null, w:null},
+    {m:88, round:"R32", date:"2026-07-03", home:"2D", away:"2G", venue:"Dallas (AT&T Stadium)", time:"13:00", utc:"2026-07-03T18:00Z", hs:null, as:null, w:null},
+    {m:89, round:"R16", date:"2026-07-04", home:"W74", away:"W77", venue:"Philadelphia (Lincoln Financial Field)", time:"17:00", utc:"2026-07-04T21:00Z", hs:null, as:null, w:null},
+    {m:90, round:"R16", date:"2026-07-04", home:"W73", away:"W75", venue:"Houston (NRG Stadium)", time:"12:00", utc:"2026-07-04T17:00Z", hs:null, as:null, w:null},
+    {m:91, round:"R16", date:"2026-07-05", home:"W76", away:"W78", venue:"New York/NJ (MetLife Stadium)", time:"16:00", utc:"2026-07-05T20:00Z", hs:null, as:null, w:null},
+    {m:92, round:"R16", date:"2026-07-05", home:"W79", away:"W80", venue:"Mexico City (Estadio Azteca)", time:"18:00", utc:"2026-07-06T00:00Z", hs:null, as:null, w:null},
+    {m:93, round:"R16", date:"2026-07-06", home:"W83", away:"W84", venue:"Dallas (AT&T Stadium)", time:"14:00", utc:"2026-07-06T19:00Z", hs:null, as:null, w:null},
+    {m:94, round:"R16", date:"2026-07-06", home:"W81", away:"W82", venue:"Seattle (Lumen Field)", time:"17:00", utc:"2026-07-07T00:00Z", hs:null, as:null, w:null},
+    {m:95, round:"R16", date:"2026-07-07", home:"W86", away:"W88", venue:"Atlanta (Mercedes-Benz Stadium)", time:"12:00", utc:"2026-07-07T16:00Z", hs:null, as:null, w:null},
+    {m:96, round:"R16", date:"2026-07-07", home:"W85", away:"W87", venue:"Vancouver (BC Place)", time:"13:00", utc:"2026-07-07T20:00Z", hs:null, as:null, w:null},
+    {m:97, round:"QF", date:"2026-07-09", home:"W89", away:"W90", venue:"Boston (Gillette Stadium)", time:"16:00", utc:"2026-07-09T20:00Z", hs:null, as:null, w:null},
+    {m:98, round:"QF", date:"2026-07-10", home:"W93", away:"W94", venue:"Los Angeles (SoFi Stadium)", time:"12:00", utc:"2026-07-10T19:00Z", hs:null, as:null, w:null},
+    {m:99, round:"QF", date:"2026-07-11", home:"W91", away:"W92", venue:"Miami (Hard Rock Stadium)", time:"17:00", utc:"2026-07-11T21:00Z", hs:null, as:null, w:null},
+    {m:100, round:"QF", date:"2026-07-11", home:"W95", away:"W96", venue:"Kansas City (Arrowhead Stadium)", time:"20:00", utc:"2026-07-12T01:00Z", hs:null, as:null, w:null},
+    {m:101, round:"SF", date:"2026-07-14", home:"W97", away:"W98", venue:"Dallas (AT&T Stadium)", time:"14:00", utc:"2026-07-14T19:00Z", hs:null, as:null, w:null},
+    {m:102, round:"SF", date:"2026-07-15", home:"W99", away:"W100", venue:"Atlanta (Mercedes-Benz Stadium)", time:"15:00", utc:"2026-07-15T19:00Z", hs:null, as:null, w:null},
+    {m:103, round:"3P", date:"2026-07-18", home:"L101", away:"L102", venue:"Miami (Hard Rock Stadium)", time:"17:00", utc:"2026-07-18T21:00Z", hs:null, as:null, w:null},
+    {m:104, round:"F", date:"2026-07-19", home:"W101", away:"W102", venue:"New York/NJ (MetLife Stadium)", time:"15:00", utc:"2026-07-19T19:00Z", hs:null, as:null, w:null}
+  ]
 };

@@ -18,7 +18,9 @@ service cloud.firestore {
         && request.resource.data.username.size() <= 30
         && request.resource.data.champion is string
         && request.resource.data.scores is map
-        && request.resource.data.scores.size() <= 72;
+        && request.resource.data.scores.size() <= 72
+        && request.resource.data.ko is map
+        && request.resource.data.ko.size() <= 32;
     }
     // Everything else: no access.
     match /{document=**} {
