@@ -97,6 +97,7 @@
       </select>
       <input id="fTeam" type="text" placeholder="Filter by team&hellip;">
     </div>
+    <div class="legend" id="tzNote" style="margin:0 2px 14px;"></div>
     <div id="matchList"></div>
   </section>
 
@@ -161,7 +162,12 @@ function renderGroups(){
   }).join("");
 }
 
-// ---------- matches ----------
+// ---------- matches (times shown in the viewer's time zone) ----------
+const localKickoff = m => m.utc ? new Date(m.utc) : new Date(m.date+"T12:00:00");
+const ymd = d => d.toLocaleDateString("en-CA"); // YYYY-MM-DD in viewer's tz
+const localTime = m => m.utc
+  ? localKickoff(m).toLocaleTimeString([], {hour:"numeric", minute:"2-digit"})
+  : (m.time||"TBD");
 function renderMatches(){
   const g = document.getElementById("fGroup").value;
   const s = document.getElementById("fStatus").value;
@@ -172,8 +178,9 @@ function renderMatches(){
   if(s==="upcoming") ms = ms.filter(m=>!played(m));
   if(t) ms = ms.filter(m=>m.home.toLowerCase().includes(t)||m.away.toLowerCase().includes(t));
   const byDate = {};
-  ms.forEach(m=>(byDate[m.date]=byDate[m.date]||[]).push(m));
-  const today = new Date().toISOString().slice(0,10);
+  ms.forEach(m=>{ const k=ymd(localKickoff(m)); (byDate[k]=byDate[k]||[]).push(m); });
+  Object.values(byDate).forEach(list=>list.sort((a,b)=>localKickoff(a)-localKickoff(b)));
+  const today = ymd(new Date());
   const el = document.getElementById("matchList");
   const dates = Object.keys(byDate).sort();
   if(!dates.length){ el.innerHTML = '<div class="empty">No matches found.</div>'; return; }
@@ -182,9 +189,9 @@ function renderMatches(){
     const items = byDate[d].map(m=>`
       <div class="match">
         <div class="h">${F(m.home)}</div>
-        <div class="mid">${played(m)?`<span class="score">${m.hs} &ndash; ${m.as}</span>`:`<span class="time">${m.time||"TBD"}</span>`}</div>
+        <div class="mid">${played(m)?`<span class="score">${m.hs} &ndash; ${m.as}</span>`:`<span class="time">${localTime(m)}</span>`}</div>
         <div class="a">${F(m.away)}</div>
-        <div class="meta">${m.g?`Group ${m.g} &middot; `:""}${m.venue}${played(m)?"":" &middot; local time"}</div>
+        <div class="meta">${m.g?`Group ${m.g} &middot; `:""}${m.venue}</div>
       </div>`).join("");
     return `<div class="day"><h2>${label}${d===today?'<span class="today">&#9679; TODAY</span>':''}</h2>${items}</div>`;
   }).join("");
@@ -252,6 +259,9 @@ document.querySelectorAll("nav button").forEach(b=>b.addEventListener("click",()
   document.querySelectorAll("main section").forEach(s=>s.style.display="none");
   document.getElementById("tab-"+b.dataset.tab).style.display="";
 }));
+document.getElementById("tzNote").innerHTML =
+  "&#128336; Kickoff times shown in your time zone: <b>" +
+  Intl.DateTimeFormat().resolvedOptions().timeZone.replace(/_/g," ") + "</b>";
 const fg = document.getElementById("fGroup");
 Object.keys(WC_DATA.groups).forEach(g=>fg.insertAdjacentHTML("beforeend",`<option>${g}</option>`));
 ["fGroup","fStatus","fTeam"].forEach(id=>document.getElementById(id).addEventListener("input",renderMatches));
