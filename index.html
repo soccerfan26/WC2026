@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>World Cup 2026 Tracker</title>
+<script src="data.js"></script>
+<style>
+  :root{
+    --bg:#0d1117; --panel:#161b22; --panel2:#1c2330; --border:#2d3748;
+    --text:#e6edf3; --muted:#8b949e; --accent:#58a6ff; --green:#2ea04326;
+    --green-line:#3fb950; --amber:#d2992226; --amber-line:#d29922; --red:#f85149;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{background:var(--bg); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; padding-bottom:60px;}
+  header{background:linear-gradient(135deg,#0a2540 0%,#14532d 50%,#7f1d1d 100%); padding:28px 24px 20px; text-align:center; border-bottom:1px solid var(--border);}
+  header h1{font-size:26px; letter-spacing:.5px;}
+  header .sub{color:#c9d1d9; font-size:13px; margin-top:6px;}
+  .progress-wrap{max-width:420px; margin:14px auto 0;}
+  .progress-bar{height:6px; background:#ffffff22; border-radius:3px; overflow:hidden;}
+  .progress-fill{height:100%; background:#3fb950; border-radius:3px;}
+  .progress-label{font-size:11px; color:#c9d1d9; margin-top:5px;}
+  nav{display:flex; justify-content:center; gap:4px; background:var(--panel); padding:8px; position:sticky; top:0; z-index:10; border-bottom:1px solid var(--border); flex-wrap:wrap;}
+  nav button{background:none; border:none; color:var(--muted); font-size:14px; padding:8px 18px; border-radius:8px; cursor:pointer; font-weight:600;}
+  nav button:hover{color:var(--text); background:var(--panel2);}
+  nav button.active{color:#fff; background:var(--accent);}
+  main{max-width:1200px; margin:0 auto; padding:20px 16px;}
+  .grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(360px,1fr)); gap:16px;}
+  .card{background:var(--panel); border:1px solid var(--border); border-radius:12px; overflow:hidden;}
+  .card h3{padding:10px 14px; font-size:14px; background:var(--panel2); border-bottom:1px solid var(--border); letter-spacing:.5px;}
+  table{width:100%; border-collapse:collapse; font-size:13px;}
+  th{color:var(--muted); font-weight:600; font-size:11px; text-transform:uppercase; padding:6px 4px;}
+  td{padding:7px 4px; border-top:1px solid #21262d;}
+  td.team,th.team{text-align:left; padding-left:12px; white-space:nowrap;}
+  td:not(.team),th:not(.team){text-align:center;}
+  td.pts{font-weight:700;}
+  tr.q1{background:var(--green); box-shadow:inset 3px 0 0 var(--green-line);}
+  tr.q3{background:var(--amber); box-shadow:inset 3px 0 0 var(--amber-line);}
+  .legend{display:flex; gap:18px; margin:14px 2px 4px; font-size:12px; color:var(--muted); flex-wrap:wrap;}
+  .legend .dot{display:inline-block; width:10px; height:10px; border-radius:2px; margin-right:6px; vertical-align:-1px;}
+  .filters{display:flex; gap:10px; margin-bottom:16px; flex-wrap:wrap;}
+  .filters select,.filters input{background:var(--panel); color:var(--text); border:1px solid var(--border); border-radius:8px; padding:8px 12px; font-size:13px;}
+  .filters input{flex:1; min-width:160px;}
+  .day{margin-bottom:22px;}
+  .day h2{font-size:14px; color:var(--accent); margin-bottom:8px; padding-bottom:4px; border-bottom:1px solid var(--border);}
+  .day h2 .today{color:var(--green-line); font-size:11px; margin-left:8px;}
+  .match{display:grid; grid-template-columns:1fr auto 1fr; align-items:center; background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:10px 14px; margin-bottom:6px; gap:8px;}
+  .match .h{text-align:right; font-weight:600;}
+  .match .a{text-align:left; font-weight:600;}
+  .match .mid{text-align:center; min-width:86px;}
+  .match .score{font-size:17px; font-weight:800;}
+  .match .time{font-size:13px; color:var(--muted); font-weight:600;}
+  .match .meta{grid-column:1/4; text-align:center; font-size:11px; color:var(--muted); margin-top:2px;}
+  .statgrid{display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:14px; margin-bottom:24px;}
+  .stat{background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:16px;}
+  .stat .v{font-size:26px; font-weight:800; color:var(--accent);}
+  .stat .l{font-size:12px; color:var(--muted); margin-top:4px;}
+  .stat .d{font-size:13px; margin-top:6px;}
+  .empty{color:var(--muted); text-align:center; padding:40px 0; font-size:14px;}
+  .wide-card{max-width:760px; margin:0 auto;}
+  footer{text-align:center; color:var(--muted); font-size:11px; margin-top:30px;}
+</style>
+</head>
+<body>
+<header>
+  <h1>&#9917; FIFA World Cup 2026</h1>
+  <div class="sub">USA &middot; Canada &middot; Mexico &mdash; 48 teams &middot; 12 groups &middot; Updated <span id="updated"></span></div>
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="prog"></div></div>
+    <div class="progress-label" id="progLabel"></div>
+  </div>
+</header>
+
+<nav>
+  <button data-tab="groups" class="active">Groups</button>
+  <button data-tab="matches">Matches</button>
+  <button data-tab="thirds">Best 3rds</button>
+  <button data-tab="stats">Stats</button>
+</nav>
+
+<main>
+  <section id="tab-groups">
+    <div class="legend">
+      <span><span class="dot" style="background:var(--green-line)"></span>Advance to Round of 32 (top 2)</span>
+      <span><span class="dot" style="background:var(--amber-line)"></span>3rd place &mdash; 8 best advance</span>
+    </div>
+    <div class="grid" id="groupsGrid" style="margin-top:12px;"></div>
+  </section>
+
+  <section id="tab-matches" style="display:none;">
+    <div class="filters">
+      <select id="fGroup"><option value="">All groups</option></select>
+      <select id="fStatus">
+        <option value="">All matches</option>
+        <option value="played">Results</option>
+        <option value="upcoming">Upcoming</option>
+      </select>
+      <input id="fTeam" type="text" placeholder="Filter by team&hellip;">
+    </div>
+    <div id="matchList"></div>
+  </section>
+
+  <section id="tab-thirds" style="display:none;">
+    <div class="card wide-card">
+      <h3>THIRD-PLACED TEAMS RANKING &mdash; TOP 8 ADVANCE</h3>
+      <table id="thirdsTable"></table>
+    </div>
+    <div class="legend" style="justify-content:center;">
+      <span><span class="dot" style="background:var(--green-line)"></span>Currently advancing</span>
+    </div>
+  </section>
+
+  <section id="tab-stats" style="display:none;">
+    <div class="statgrid" id="statCards"></div>
+    <div class="grid" id="statTables"></div>
+  </section>
+</main>
+
+<footer>Points: Win = 3 &middot; Draw = 1 &middot; Loss = 0 &nbsp;|&nbsp; Tiebreakers: Points &rarr; Goal difference &rarr; Goals for &rarr; Head-to-head</footer>
+
+<script>
+const D = WC_DATA;
+const F = t => (D.flags[t]||"") + " " + t;
+const played = m => m.hs !== null && m.as !== null;
+
+// ---------- standings ----------
+function computeGroup(g){
+  const rows = {};
+  D.groups[g].forEach(t => rows[t] = {team:t, p:0,w:0,d:0,l:0,gf:0,ga:0,gd:0,pts:0});
+  D.matches.filter(m => m.g===g && played(m)).forEach(m=>{
+    const h=rows[m.home], a=rows[m.away];
+    h.p++; a.p++; h.gf+=m.hs; h.ga+=m.as; a.gf+=m.as; a.ga+=m.hs;
+    if(m.hs>m.as){h.w++;h.pts+=3;a.l++;}
+    else if(m.hs<m.as){a.w++;a.pts+=3;h.l++;}
+    else {h.d++;a.d++;h.pts++;a.pts++;}
+  });
+  Object.values(rows).forEach(r=>r.gd=r.gf-r.ga);
+  const list = Object.values(rows);
+  list.sort((x,y)=> y.pts-x.pts || y.gd-x.gd || y.gf-x.gf || h2h(g,x,y) || x.team.localeCompare(y.team));
+  return list;
+}
+function h2h(g,x,y){ // head-to-head points between two tied teams
+  const m = D.matches.find(m=>m.g===g && played(m) &&
+    ((m.home===x.team&&m.away===y.team)||(m.home===y.team&&m.away===x.team)));
+  if(!m) return 0;
+  const xGoals = m.home===x.team? m.hs:m.as, yGoals = m.home===x.team? m.as:m.hs;
+  return yGoals - xGoals; // winner of h2h ranks higher
+}
+
+function renderGroups(){
+  const grid = document.getElementById("groupsGrid");
+  grid.innerHTML = Object.keys(D.groups).map(g=>{
+    const rows = computeGroup(g).map((r,i)=>`
+      <tr class="${i<2?'q1': i===2?'q3':''}">
+        <td class="team">${F(r.team)}</td>
+        <td>${r.p}</td><td>${r.w}</td><td>${r.d}</td><td>${r.l}</td>
+        <td>${r.gf}</td><td>${r.ga}</td><td>${r.gd>0?'+':''}${r.gd}</td><td class="pts">${r.pts}</td>
+      </tr>`).join("");
+    return `<div class="card"><h3>GROUP ${g}</h3>
+      <table><tr><th class="team">Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>GF</th><th>GA</th><th>GD</th><th>Pts</th></tr>${rows}</table></div>`;
+  }).join("");
+}
+
+// ---------- matches ----------
+function renderMatches(){
+  const g = document.getElementById("fGroup").value;
+  const s = document.getElementById("fStatus").value;
+  const t = document.getElementById("fTeam").value.trim().toLowerCase();
+  let ms = D.matches.concat(D.knockout||[]);
+  if(g) ms = ms.filter(m=>m.g===g);
+  if(s==="played") ms = ms.filter(played);
+  if(s==="upcoming") ms = ms.filter(m=>!played(m));
+  if(t) ms = ms.filter(m=>m.home.toLowerCase().includes(t)||m.away.toLowerCase().includes(t));
+  const byDate = {};
+  ms.forEach(m=>(byDate[m.date]=byDate[m.date]||[]).push(m));
+  const today = new Date().toISOString().slice(0,10);
+  const el = document.getElementById("matchList");
+  const dates = Object.keys(byDate).sort();
+  if(!dates.length){ el.innerHTML = '<div class="empty">No matches found.</div>'; return; }
+  el.innerHTML = dates.map(d=>{
+    const label = new Date(d+"T12:00:00").toLocaleDateString("en-US",{weekday:"long",month:"long",day:"numeric"});
+    const items = byDate[d].map(m=>`
+      <div class="match">
+        <div class="h">${F(m.home)}</div>
+        <div class="mid">${played(m)?`<span class="score">${m.hs} &ndash; ${m.as}</span>`:`<span class="time">${m.time||"TBD"}</span>`}</div>
+        <div class="a">${F(m.away)}</div>
+        <div class="meta">${m.g?`Group ${m.g} &middot; `:""}${m.venue}${played(m)?"":" &middot; local time"}</div>
+      </div>`).join("");
+    return `<div class="day"><h2>${label}${d===today?'<span class="today">&#9679; TODAY</span>':''}</h2>${items}</div>`;
+  }).join("");
+}
+
+// ---------- third place ----------
+function renderThirds(){
+  const thirds = Object.keys(D.groups).map(g=>({g, ...computeGroup(g)[2]}));
+  thirds.sort((x,y)=> y.pts-x.pts || y.gd-x.gd || y.gf-x.gf || x.team.localeCompare(y.team));
+  document.getElementById("thirdsTable").innerHTML =
+    `<tr><th>#</th><th class="team">Team</th><th>Grp</th><th>P</th><th>W</th><th>D</th><th>L</th><th>GD</th><th>Pts</th></tr>` +
+    thirds.map((r,i)=>`<tr class="${i<8?'q1':''}">
+      <td>${i+1}</td><td class="team">${F(r.team)}</td><td>${r.g}</td>
+      <td>${r.p}</td><td>${r.w}</td><td>${r.d}</td><td>${r.l}</td>
+      <td>${r.gd>0?'+':''}${r.gd}</td><td class="pts">${r.pts}</td></tr>`).join("");
+}
+
+// ---------- stats ----------
+function renderStats(){
+  const pm = D.matches.filter(played);
+  const goals = pm.reduce((s,m)=>s+m.hs+m.as,0);
+  const cards = document.getElementById("statCards");
+  const tables = document.getElementById("statTables");
+  if(!pm.length){
+    cards.innerHTML = '<div class="empty" style="grid-column:1/-1">Stats appear once the first match is played &mdash; kickoff is June 11.</div>';
+    tables.innerHTML = "";
+    return;
+  }
+  let biggest=null, highest=null;
+  pm.forEach(m=>{
+    const diff=Math.abs(m.hs-m.as), tot=m.hs+m.as;
+    if(!biggest||diff>Math.abs(biggest.hs-biggest.as)) biggest=m;
+    if(!highest||tot>highest.hs+highest.as) highest=m;
+  });
+  const draws = pm.filter(m=>m.hs===m.as).length;
+  const fmt = m=>`${m.home} ${m.hs}&ndash;${m.as} ${m.away}`;
+  cards.innerHTML = `
+    <div class="stat"><div class="v">${pm.length}</div><div class="l">Matches played</div></div>
+    <div class="stat"><div class="v">${goals}</div><div class="l">Total goals</div></div>
+    <div class="stat"><div class="v">${(goals/pm.length).toFixed(2)}</div><div class="l">Goals per match</div></div>
+    <div class="stat"><div class="v">${draws}</div><div class="l">Draws</div></div>
+    <div class="stat"><div class="v" style="font-size:15px;margin-top:6px;">${fmt(biggest)}</div><div class="l">Biggest win</div></div>
+    <div class="stat"><div class="v" style="font-size:15px;margin-top:6px;">${fmt(highest)}</div><div class="l">Highest-scoring match</div></div>`;
+  // attack / defense leaders
+  const all = Object.keys(D.groups).flatMap(g=>computeGroup(g)).filter(r=>r.p>0);
+  const top = (key,desc=true)=>[...all].sort((a,b)=>desc?b[key]-a[key]:a[key]-b[key]).slice(0,10);
+  const tbl=(title,rows,key)=>`<div class="card"><h3>${title}</h3><table>
+    <tr><th>#</th><th class="team">Team</th><th>P</th><th>${key.toUpperCase()}</th></tr>
+    ${rows.map((r,i)=>`<tr><td>${i+1}</td><td class="team">${F(r.team)}</td><td>${r.p}</td><td class="pts">${r[key]}</td></tr>`).join("")}
+  </table></div>`;
+  tables.innerHTML = tbl("MOST GOALS SCORED", top("gf"), "gf") + tbl("FEWEST GOALS CONCEDED", top("ga",false), "ga");
+}
+
+// ---------- shell ----------
+function renderAll(){
+  document.getElementById("updated").textContent = new Date(D.lastUpdated+"T12:00:00").toLocaleDateString("en-US",{month:"long",day:"numeric",year:"numeric"});
+  const total = D.matches.length, done = D.matches.filter(played).length;
+  document.getElementById("prog").style.width = (done/total*100)+"%";
+  document.getElementById("progLabel").textContent = `Group stage: ${done} of ${total} matches played`;
+  renderGroups(); renderMatches(); renderThirds(); renderStats();
+}
+document.querySelectorAll("nav button").forEach(b=>b.addEventListener("click",()=>{
+  document.querySelectorAll("nav button").forEach(x=>x.classList.remove("active"));
+  b.classList.add("active");
+  document.querySelectorAll("main section").forEach(s=>s.style.display="none");
+  document.getElementById("tab-"+b.dataset.tab).style.display="";
+}));
+const fg = document.getElementById("fGroup");
+Object.keys(WC_DATA.groups).forEach(g=>fg.insertAdjacentHTML("beforeend",`<option>${g}</option>`));
+["fGroup","fStatus","fTeam"].forEach(id=>document.getElementById(id).addEventListener("input",renderMatches));
+renderAll();
+</script>
+</body>
+</html>
