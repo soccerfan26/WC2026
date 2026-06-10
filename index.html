@@ -5,6 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>World Cup 2026 Tracker</title>
 <script src="data.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
 <style>
   :root{
     --bg:#0d1117; --panel:#161b22; --panel2:#1c2330; --border:#2d3748;
@@ -59,6 +63,22 @@
   .empty{color:var(--muted); text-align:center; padding:40px 0; font-size:14px;}
   .wide-card{max-width:760px; margin:0 auto;}
   footer{text-align:center; color:var(--muted); font-size:11px; margin-top:30px;}
+  .btn{background:var(--accent); color:#fff; border:none; border-radius:8px; padding:9px 16px; font-size:13px; font-weight:700; cursor:pointer;}
+  .btn.gray{background:var(--panel2); color:var(--text); border:1px solid var(--border);}
+  .btn:disabled{opacity:.45; cursor:not-allowed;}
+  .authform{display:flex; flex-direction:column; gap:10px; padding:16px;}
+  .authform input,.authform select{background:var(--bg); color:var(--text); border:1px solid var(--border); border-radius:8px; padding:9px 12px; font-size:14px;}
+  .authform .row{display:flex; gap:8px; flex-wrap:wrap;}
+  .notice{padding:14px 16px; font-size:13px; color:var(--muted); line-height:1.6;}
+  .err{color:var(--red); font-size:12px; min-height:14px;}
+  .ok{color:var(--green-line); font-size:12px;}
+  .pick{display:grid; grid-template-columns:1fr 120px 1fr; align-items:center; gap:8px; background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:8px 14px; margin-bottom:6px;}
+  .pick .mid2{display:flex; gap:6px; justify-content:center; align-items:center;}
+  .pick input{width:44px; text-align:center; background:var(--bg); color:var(--text); border:1px solid var(--border); border-radius:6px; padding:6px 2px; font-size:14px; font-weight:700;}
+  .pick input:disabled{opacity:.55;}
+  .pick .res{grid-column:1/4; text-align:center; font-size:11px; color:var(--muted);}
+  .pick .res b.hit{color:var(--green-line);}
+  .savebar{position:sticky; bottom:10px; background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:10px 14px; display:flex; gap:14px; align-items:center; justify-content:center; margin-top:14px; flex-wrap:wrap;}
 </style>
 </head>
 <body>
@@ -76,6 +96,8 @@
   <button data-tab="matches">Matches</button>
   <button data-tab="thirds">Best 3rds</button>
   <button data-tab="stats">Stats</button>
+  <button data-tab="picks">My Picks</button>
+  <button data-tab="leaderboard">Leaderboard</button>
 </nav>
 
 <main>
@@ -114,6 +136,22 @@
   <section id="tab-stats" style="display:none;">
     <div class="statgrid" id="statCards"></div>
     <div class="grid" id="statTables"></div>
+  </section>
+
+  <section id="tab-picks" style="display:none;">
+    <div class="card wide-card" id="authCard" style="margin-bottom:16px;"></div>
+    <div class="wide-card" id="picksArea" style="margin:0 auto;"></div>
+  </section>
+
+  <section id="tab-leaderboard" style="display:none;">
+    <div class="card wide-card">
+      <h3>&#127942; PREDICTION POOL LEADERBOARD</h3>
+      <table id="lbTable"></table>
+      <div class="notice" id="lbNote"></div>
+    </div>
+    <div class="legend" style="justify-content:center;">
+      <span>Exact score = 3 pts</span><span>Correct result = 1 pt</span><span>Champion = +10 pts</span>
+    </div>
   </section>
 </main>
 
@@ -245,6 +283,179 @@ function renderStats(){
   tables.innerHTML = tbl("MOST GOALS SCORED", top("gf"), "gf") + tbl("FEWEST GOALS CONCEDED", top("ga",false), "ga");
 }
 
+// ---------- prediction pool ----------
+const LOCK = new Date("2026-06-11T19:00:00Z"); // Match 1 kickoff — no changes after this
+const locked = () => Date.now() >= LOCK.getTime();
+const POOL = {ready:false, user:null, picks:null, auth:null, db:null};
+try{
+  if (typeof firebase !== "undefined" && typeof firebaseConfig !== "undefined" && !/PASTE/.test(firebaseConfig.apiKey||"PASTE")){
+    firebase.initializeApp(firebaseConfig);
+    POOL.auth = firebase.auth();
+    POOL.db = firebase.firestore();
+    POOL.ready = true;
+    POOL.auth.onAuthStateChanged(async u=>{
+      POOL.user = u; POOL.picks = null;
+      if(u){
+        try{
+          const doc = await POOL.db.collection("picks").doc(u.uid).get();
+          POOL.picks = doc.exists ? doc.data() : {username:u.displayName||u.email.split("@")[0], scores:{}, champion:""};
+        }catch(e){ POOL.picks = {username:u.displayName||"player", scores:{}, champion:""}; }
+      }
+      renderPicks();
+    });
+  }
+}catch(e){ console.warn("Prediction pool disabled:", e); }
+
+function fmtCountdown(){
+  const ms = LOCK - Date.now();
+  if(ms<=0) return "locked";
+  const h = Math.floor(ms/36e5), mi = Math.floor(ms%36e5/6e4);
+  return h + "h " + mi + "m";
+}
+
+function scorePicks(p){
+  let pts=0, exact=0, results=0;
+  D.matches.filter(played).forEach(m=>{
+    const s = p.scores && p.scores[m.m];
+    if(!s || s.length!==2) return;
+    if(s[0]===m.hs && s[1]===m.as){ pts+=3; exact++; }
+    else if(Math.sign(s[0]-s[1])===Math.sign(m.hs-m.as)){ pts+=1; results++; }
+  });
+  if(D.champion && p.champion===D.champion) pts+=10;
+  return {pts, exact, results};
+}
+
+function renderPicks(){
+  const card = document.getElementById("authCard");
+  const area = document.getElementById("picksArea");
+  if(!POOL.ready){
+    card.innerHTML = '<h3>PREDICTION POOL</h3><div class="notice">The pool isn\'t live yet &mdash; the site owner still needs to connect Firebase (see SETUP-FIREBASE.md in the repository). Once connected, you can create an account here and submit your predictions.</div>';
+    area.innerHTML = ""; return;
+  }
+  if(!POOL.user){
+    card.innerHTML = `<h3>JOIN THE POOL &mdash; SIGN IN OR CREATE AN ACCOUNT</h3>
+      <div class="authform">
+        <input id="aUser" placeholder="Username — shown on the leaderboard (new accounts only)" maxlength="30" autocomplete="username">
+        <input id="aEmail" type="email" placeholder="Email address" autocomplete="email">
+        <input id="aPass" type="password" placeholder="Password (6+ characters)" autocomplete="current-password">
+        <div class="row">
+          <button class="btn" id="btnUp">Create account</button>
+          <button class="btn gray" id="btnIn">Sign in</button>
+        </div>
+        <div class="err" id="aErr"></div>
+      </div>`;
+    area.innerHTML = "";
+    const err = t => document.getElementById("aErr").textContent = t;
+    const val = id => document.getElementById(id).value;
+    document.getElementById("btnUp").onclick = async ()=>{
+      const un = val("aUser").trim();
+      if(!un) return err("Pick a username first — it's what shows on the leaderboard.");
+      if(locked()) return err("Entries are locked — the tournament has already started.");
+      try{
+        const cred = await POOL.auth.createUserWithEmailAndPassword(val("aEmail").trim(), val("aPass"));
+        await cred.user.updateProfile({displayName:un});
+        await POOL.db.collection("picks").doc(cred.user.uid).set({username:un, scores:{}, champion:""});
+      }catch(e){ err(e.message.replace("Firebase: ","")); }
+    };
+    document.getElementById("btnIn").onclick = async ()=>{
+      try{ await POOL.auth.signInWithEmailAndPassword(val("aEmail").trim(), val("aPass")); }
+      catch(e){ err("Sign-in failed — check your email and password."); }
+    };
+    return;
+  }
+  // signed in
+  const p = POOL.picks || {scores:{}, champion:""};
+  const lock = locked();
+  const sc = scorePicks(p);
+  card.innerHTML = `<h3>MY PICKS &mdash; ${p.username||""}</h3>
+    <div class="notice">Signed in as ${POOL.user.email} &middot; <a href="#" id="aOut" style="color:var(--accent)">sign out</a><br>
+    ${lock ? `Entries are <b>locked</b>. Your score so far: <b>${sc.pts} pts</b> (${sc.exact} exact, ${sc.results} correct results).`
+           : `Predict the score of all 72 group matches and pick your champion (+10 pts). Save as often as you like &mdash; picks <b>lock in ${fmtCountdown()}</b>, when the first match kicks off.`}</div>`;
+  document.getElementById("aOut").onclick = e=>{ e.preventDefault(); POOL.auth.signOut(); };
+
+  const champs = Object.values(D.groups).flat().sort()
+    .map(t=>`<option value="${t}" ${p.champion===t?"selected":""}>${D.flags[t]||""} ${t}</option>`).join("");
+  const byDate = {};
+  D.matches.forEach(m=>(byDate[m.date]=byDate[m.date]||[]).push(m));
+  const days = Object.keys(byDate).sort().map(d=>{
+    const label = new Date(d+"T12:00:00").toLocaleDateString("en-US",{weekday:"long",month:"long",day:"numeric"});
+    const items = byDate[d].map(m=>{
+      const s = (p.scores && p.scores[m.m]) || ["",""];
+      let res = "";
+      if(played(m)){
+        let badge = "";
+        if(s[0]!=="" && s.length===2){
+          if(s[0]===m.hs && s[1]===m.as) badge = ' &middot; <b class="hit">+3 exact!</b>';
+          else if(Math.sign(s[0]-s[1])===Math.sign(m.hs-m.as)) badge = ' &middot; <b class="hit">+1 result</b>';
+          else badge = " &middot; 0 pts";
+        }
+        res = `<div class="res">Final: ${m.hs}&ndash;${m.as}${badge}</div>`;
+      }
+      return `<div class="pick">
+        <div class="h" style="text-align:right;font-weight:600;">${F(m.home)}</div>
+        <div class="mid2">
+          <input id="ph-${m.m}" type="number" min="0" max="20" value="${s[0]}" ${lock?"disabled":""}>
+          <span>&ndash;</span>
+          <input id="pa-${m.m}" type="number" min="0" max="20" value="${s[1]}" ${lock?"disabled":""}>
+        </div>
+        <div style="font-weight:600;">${F(m.away)}</div>
+        ${res}</div>`;
+    }).join("");
+    return `<div class="day"><h2>${label}</h2>${items}</div>`;
+  }).join("");
+
+  area.innerHTML = `
+    <div class="card" style="margin-bottom:16px;"><h3>&#127942; YOUR CHAMPION (+10 pts)</h3>
+      <div class="authform"><select id="pChamp" ${lock?"disabled":""}><option value="">&mdash; pick the World Cup winner &mdash;</option>${champs}</select></div>
+    </div>
+    ${days}
+    ${lock ? "" : `<div class="savebar">
+      <button class="btn" id="btnSave">Save my picks</button>
+      <span class="err" id="sErr"></span><span class="ok" id="sOk"></span>
+    </div>`}`;
+
+  if(!lock) document.getElementById("btnSave").onclick = async ()=>{
+    const sErr=document.getElementById("sErr"), sOk=document.getElementById("sOk");
+    sErr.textContent=""; sOk.textContent="";
+    if(locked()){ sErr.textContent="Too late — the tournament has started."; return; }
+    const scores={}; let half=0;
+    D.matches.forEach(m=>{
+      const h=document.getElementById("ph-"+m.m).value, a=document.getElementById("pa-"+m.m).value;
+      if(h!=="" && a!=="") scores[m.m]=[Math.min(20,Math.max(0,+h)), Math.min(20,Math.max(0,+a))];
+      else if(h!=="" || a!=="") half++;
+    });
+    if(half){ sErr.textContent = half+" match(es) have only one side filled in."; return; }
+    try{
+      const data = {username:(POOL.picks&&POOL.picks.username)||POOL.user.displayName||"player",
+        scores, champion:document.getElementById("pChamp").value,
+        updatedAt:firebase.firestore.FieldValue.serverTimestamp()};
+      await POOL.db.collection("picks").doc(POOL.user.uid).set(data);
+      POOL.picks = {...POOL.picks, scores, champion:data.champion};
+      sOk.textContent = "Saved — "+Object.keys(scores).length+"/72 matches + "+(data.champion?"champion":"no champion yet")+".";
+    }catch(e){ sErr.textContent = "Save failed: "+e.message.replace("Firebase: ",""); }
+  };
+}
+
+async function renderLeaderboard(){
+  const tbl=document.getElementById("lbTable"), note=document.getElementById("lbNote");
+  if(!POOL.ready){ tbl.innerHTML=""; note.textContent="The pool isn't live yet — Firebase setup pending."; return; }
+  note.textContent="Loading…";
+  try{
+    const snap = await POOL.db.collection("picks").get();
+    const rows = snap.docs.map(d=>{
+      const p=d.data();
+      return {username:p.username||"player", champion:p.champion||"", n:Object.keys(p.scores||{}).length, ...scorePicks(p)};
+    }).sort((a,b)=>b.pts-a.pts||b.exact-a.exact||a.username.localeCompare(b.username));
+    if(!rows.length){ tbl.innerHTML=""; note.textContent="No brackets submitted yet — be the first!"; return; }
+    note.textContent="";
+    tbl.innerHTML = `<tr><th>#</th><th class="team">Player</th><th>Champion pick</th><th>Picks</th><th>Exact</th><th>Results</th><th>Pts</th></tr>` +
+      rows.map((r,i)=>`<tr class="${i===0&&r.pts>0?'q1':''}">
+        <td>${i+1}</td><td class="team">${r.username.replace(/[<>&]/g,"")}</td>
+        <td>${r.champion?(D.flags[r.champion]||"")+" "+r.champion:"—"}</td>
+        <td>${r.n}/72</td><td>${r.exact}</td><td>${r.results}</td><td class="pts">${r.pts}</td></tr>`).join("");
+  }catch(e){ note.textContent="Couldn't load leaderboard: "+e.message; }
+}
+
 // ---------- shell ----------
 function renderAll(){
   document.getElementById("updated").textContent = new Date(D.lastUpdated+"T12:00:00").toLocaleDateString("en-US",{month:"long",day:"numeric",year:"numeric"});
@@ -258,6 +469,8 @@ document.querySelectorAll("nav button").forEach(b=>b.addEventListener("click",()
   b.classList.add("active");
   document.querySelectorAll("main section").forEach(s=>s.style.display="none");
   document.getElementById("tab-"+b.dataset.tab).style.display="";
+  if(b.dataset.tab==="picks") renderPicks();
+  if(b.dataset.tab==="leaderboard") renderLeaderboard();
 }));
 document.getElementById("tzNote").innerHTML =
   "&#128336; Kickoff times shown in your time zone: <b>" +

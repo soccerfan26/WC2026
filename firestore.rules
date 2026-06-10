@@ -1,0 +1,28 @@
+rules_version = '2';
+// World Cup 2026 prediction pool — Firestore security rules.
+// THE LOCK IS ENFORCED HERE, server-side: after Match 1 kicks off
+// (June 11, 2026, 19:00 UTC), all writes are rejected no matter what
+// anyone does in their browser.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /picks/{uid} {
+      // Anyone can read picks (needed for the public leaderboard).
+      allow read: if true;
+      // A signed-in user may write ONLY their own document, ONLY before kickoff,
+      // and the document must have a sane shape.
+      allow write: if request.auth != null
+        && request.auth.uid == uid
+        && request.time < timestamp.date(2026, 6, 11) + duration.value(19, 'h')
+        && request.resource.data.username is string
+        && request.resource.data.username.size() > 0
+        && request.resource.data.username.size() <= 30
+        && request.resource.data.champion is string
+        && request.resource.data.scores is map
+        && request.resource.data.scores.size() <= 72;
+    }
+    // Everything else: no access.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
