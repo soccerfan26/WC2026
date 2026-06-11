@@ -2,7 +2,7 @@
 // To record a result: set hs (home score) and as (away score) on the match. Leave null if not played.
 // lastUpdated drives the "as of" label in the dashboard.
 const WC_DATA = {
-  lastUpdated: "2026-06-10",
+  lastUpdated: "2026-06-11",
 
   groups: {
     A: ["Mexico", "South Africa", "South Korea", "Czechia"],
@@ -36,7 +36,7 @@ const WC_DATA = {
 
   // 72 group-stage matches. Times are stadium-local (per FOX Sports listings).
   matches: [
-    {m:1,  g:"A", date:"2026-06-11", home:"Mexico", away:"South Africa", venue:"Mexico City (Estadio Azteca)", time:"13:00", utc:"2026-06-11T19:00Z", hs:null, as:null},
+    {m:1,  g:"A", date:"2026-06-11", home:"Mexico", away:"South Africa", venue:"Mexico City (Estadio Azteca)", time:"13:00", utc:"2026-06-11T19:00Z", hs:2, as:0},
     {m:2,  g:"A", date:"2026-06-11", home:"South Korea", away:"Czechia", venue:"Guadalajara (Estadio Akron)", time:"20:00", utc:"2026-06-12T02:00Z", hs:null, as:null},
     {m:3,  g:"B", date:"2026-06-12", home:"Canada", away:"Bosnia and Herzegovina", venue:"Toronto (BMO Field)", time:"15:00", utc:"2026-06-12T19:00Z", hs:null, as:null},
     {m:4,  g:"D", date:"2026-06-12", home:"USA", away:"Paraguay", venue:"Los Angeles (SoFi Stadium)", time:"18:00", utc:"2026-06-13T01:00Z", hs:null, as:null},
