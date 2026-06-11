@@ -1,5 +1,10 @@
 // World Cup 2026 data — updated daily.
 // To record a result: set hs (home score) and as (away score) on the match. Leave null if not played.
+// Completed matches also get:
+//   scorers: [{player, team, min}] in chronological order. min is a number, or a string like "45+2"
+//            for stoppage time. Append " (P)" for penalties, " (OG)" for own goals (team = side credited the goal).
+//   cards:   {red:[{player, team, min}], yellow:[...]} — only include what's reliably reported; omit yellow if unknown.
+// team values must exactly match the flags keys.
 // lastUpdated drives the "as of" label in the dashboard.
 const WC_DATA = {
   lastUpdated: "2026-06-11",
@@ -36,7 +41,9 @@ const WC_DATA = {
 
   // 72 group-stage matches. Times are stadium-local (per FOX Sports listings).
   matches: [
-    {m:1,  g:"A", date:"2026-06-11", home:"Mexico", away:"South Africa", venue:"Mexico City (Estadio Azteca)", time:"13:00", utc:"2026-06-11T19:00Z", hs:2, as:0},
+    {m:1,  g:"A", date:"2026-06-11", home:"Mexico", away:"South Africa", venue:"Mexico City (Estadio Azteca)", time:"13:00", utc:"2026-06-11T19:00Z", hs:2, as:0,
+     scorers:[{player:"Julián Quiñones", team:"Mexico", min:9},{player:"Raúl Jiménez", team:"Mexico", min:66}],
+     cards:{red:[{player:"Sithole", team:"South Africa", min:49},{player:"Zwane", team:"South Africa", min:84},{player:"César Montes", team:"Mexico", min:"90+"}]}},
     {m:2,  g:"A", date:"2026-06-11", home:"South Korea", away:"Czechia", venue:"Guadalajara (Estadio Akron)", time:"20:00", utc:"2026-06-12T02:00Z", hs:null, as:null},
     {m:3,  g:"B", date:"2026-06-12", home:"Canada", away:"Bosnia and Herzegovina", venue:"Toronto (BMO Field)", time:"15:00", utc:"2026-06-12T19:00Z", hs:null, as:null},
     {m:4,  g:"D", date:"2026-06-12", home:"USA", away:"Paraguay", venue:"Los Angeles (SoFi Stadium)", time:"18:00", utc:"2026-06-13T01:00Z", hs:null, as:null},
