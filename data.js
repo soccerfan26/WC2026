@@ -7,7 +7,7 @@
 // team values must exactly match the flags keys.
 // lastUpdated drives the "as of" label in the dashboard.
 const WC_DATA = {
-  lastUpdated: "2026-06-11",
+  lastUpdated: "2026-06-12",
 
   groups: {
     A: ["Mexico", "South Africa", "South Korea", "Czechia"],
@@ -43,9 +43,12 @@ const WC_DATA = {
   matches: [
     {m:1,  g:"A", date:"2026-06-11", home:"Mexico", away:"South Africa", venue:"Mexico City (Estadio Azteca)", time:"13:00", utc:"2026-06-11T19:00Z", hs:2, as:0,
      scorers:[{player:"Julián Quiñones", team:"Mexico", min:9},{player:"Raúl Jiménez", team:"Mexico", min:66}],
-     cards:{red:[{player:"Sithole", team:"South Africa", min:49},{player:"Zwane", team:"South Africa", min:84},{player:"César Montes", team:"Mexico", min:"90+"}]}},
-    {m:2,  g:"A", date:"2026-06-11", home:"South Korea", away:"Czechia", venue:"Guadalajara (Estadio Akron)", time:"20:00", utc:"2026-06-12T02:00Z", hs:null, as:null},
-    {m:3,  g:"B", date:"2026-06-12", home:"Canada", away:"Bosnia and Herzegovina", venue:"Toronto (BMO Field)", time:"15:00", utc:"2026-06-12T19:00Z", hs:null, as:null},
+     cards:{red:[{player:"Yaya Sithole", team:"South Africa", min:49},{player:"Themba Zwane", team:"South Africa", min:84},{player:"César Montes", team:"Mexico", min:"90+"}]}},
+    {m:2,  g:"A", date:"2026-06-11", home:"South Korea", away:"Czechia", venue:"Guadalajara (Estadio Akron)", time:"20:00", utc:"2026-06-12T02:00Z", hs:2, as:1,
+     scorers:[{player:"Ladislav Krejčí", team:"Czechia", min:59},{player:"Hwang In-beom", team:"South Korea", min:67},{player:"Oh Hyeon-gyu", team:"South Korea", min:80}],
+     cards:{red:[], yellow:[{player:"Lee Gi-hyuk", team:"South Korea", min:"90+6"}]}},
+    {m:3,  g:"B", date:"2026-06-12", home:"Canada", away:"Bosnia and Herzegovina", venue:"Toronto (BMO Field)", time:"15:00", utc:"2026-06-12T19:00Z", hs:1, as:1,
+     scorers:[{player:"Jovo Lukić", team:"Bosnia and Herzegovina", min:19},{player:"Cyle Larin", team:"Canada", min:78}]},
     {m:4,  g:"D", date:"2026-06-12", home:"USA", away:"Paraguay", venue:"Los Angeles (SoFi Stadium)", time:"18:00", utc:"2026-06-13T01:00Z", hs:null, as:null},
     {m:5,  g:"D", date:"2026-06-13", home:"Australia", away:"Türkiye", venue:"Vancouver (BC Place)", time:"21:00", utc:"2026-06-14T04:00Z", hs:null, as:null},
     {m:6,  g:"B", date:"2026-06-13", home:"Qatar", away:"Switzerland", venue:"SF Bay Area (Levi's Stadium)", time:"12:00", utc:"2026-06-13T19:00Z", hs:null, as:null},
