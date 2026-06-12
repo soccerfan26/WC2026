@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>World Cup 2026 Tracker</title>
-<script src="data.js"></script>
+<script src="data.js?v=2026-06-11"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
@@ -278,9 +278,22 @@ function renderMatches(){
         <div class="mid">${played(m)?`<span class="score">${m.hs} &ndash; ${m.as}</span>${m.w?'<div style="font-size:10px;color:var(--muted)">'+m.w+' on pens</div>':''}`:`<span class="time">${localTime(m)}</span>`}</div>
         <div class="a">${slotLabel(m.away)}</div>
         <div class="meta">${m.g?`Group ${m.g}`:(ROUND_NAME[m.round]||"")} &middot; ${m.venue}</div>
+        ${matchEvents(m)}
       </div>`).join("");
     return `<div class="day"><h2>${label}${d===today?'<span class="today">&#9679; TODAY</span>':''}</h2>${items}</div>`;
   }).join("");
+}
+
+// Scorer + card lines shown under a played match.
+function matchEvents(m){
+  if(!played(m)) return "";
+  let out = "";
+  if(m.scorers && m.scorers.length)
+    out += `<div class="meta">&#9917; ${m.scorers.map(s=>`${s.player} ${s.min}'`).join(" &middot; ")}</div>`;
+  const reds = m.cards && m.cards.red || [];
+  if(reds.length)
+    out += `<div class="meta">&#128997; ${reds.map(c=>`${c.player} (${c.team}) ${c.min}'`).join(" &middot; ")}</div>`;
+  return out;
 }
 
 // ---------- third place (actual) ----------
@@ -326,7 +339,27 @@ function renderStats(){
     <tr><th>#</th><th class="team">Team</th><th>P</th><th>${key.toUpperCase()}</th></tr>
     ${rows.map((r,i)=>`<tr><td>${i+1}</td><td class="team">${F(r.team)}</td><td>${r.p}</td><td class="pts">${r[key]}</td></tr>`).join("")}
   </table></div>`;
-  tables.innerHTML = tbl("MOST GOALS SCORED", top("gf"), "gf") + tbl("FEWEST GOALS CONCEDED", top("ga",false), "ga");
+  // Top scorers + red cards, aggregated from per-match scorers/cards data.
+  const allPlayed = D.matches.concat(D.knockout||[]).filter(played);
+  const sc = {};
+  allPlayed.forEach(m=>(m.scorers||[]).forEach(s=>{
+    if(/\(OG\)\s*$/.test(s.player)) return; // own goals don't count for the golden boot
+    const name = s.player.replace(/\s*\(P\)\s*$/,"");
+    const k = name+"|"+s.team;
+    sc[k] = sc[k] || {player:name, team:s.team, goals:0};
+    sc[k].goals++;
+  }));
+  const topScorers = Object.values(sc).sort((a,b)=>b.goals-a.goals||a.player.localeCompare(b.player)).slice(0,10);
+  const scorersTbl = topScorers.length ? `<div class="card"><h3>TOP SCORERS</h3><table>
+    <tr><th>#</th><th class="team">Player</th><th class="team">Team</th><th>G</th></tr>
+    ${topScorers.map((r,i)=>`<tr><td>${i+1}</td><td class="team">${r.player}</td><td class="team">${F(r.team)}</td><td class="pts">${r.goals}</td></tr>`).join("")}
+  </table></div>` : "";
+  const reds = allPlayed.flatMap(m=>(m.cards&&m.cards.red||[]).map(c=>({...c, match:`${m.home} v ${m.away}`})));
+  const redsTbl = reds.length ? `<div class="card"><h3>&#128997; RED CARDS</h3><table>
+    <tr><th class="team">Player</th><th class="team">Team</th><th>Min</th><th class="team">Match</th></tr>
+    ${reds.map(c=>`<tr><td class="team">${c.player}</td><td class="team">${F(c.team)}</td><td>${c.min}'</td><td class="team">${c.match}</td></tr>`).join("")}
+  </table></div>` : "";
+  tables.innerHTML = scorersTbl + redsTbl + tbl("MOST GOALS SCORED", top("gf"), "gf") + tbl("FEWEST GOALS CONCEDED", top("ga",false), "ga");
 }
 
 // ---------- prediction pool ----------
