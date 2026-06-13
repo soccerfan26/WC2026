@@ -56,6 +56,13 @@
   .match .score{font-size:17px; font-weight:800;}
   .match .time{font-size:13px; color:var(--muted); font-weight:600;}
   .match .meta{grid-column:1/4; text-align:center; font-size:11px; color:var(--muted); margin-top:2px;}
+  .match .calwrap{grid-column:1/4; text-align:center; margin-top:4px; position:relative;}
+  .calbtn{font:inherit; font-size:11px; font-weight:600; color:var(--muted); background:transparent; border:1px solid var(--border); border-radius:7px; padding:3px 10px; cursor:pointer;}
+  .calbtn:hover{color:var(--text); border-color:var(--muted);}
+  .calmenu{display:none; position:absolute; left:50%; transform:translateX(-50%); top:100%; margin-top:4px; z-index:20; background:var(--panel); border:1px solid var(--border); border-radius:10px; box-shadow:0 6px 20px rgba(0,0,0,.35); padding:5px; min-width:150px;}
+  .calmenu.open{display:block;}
+  .calmenu a{display:block; text-align:left; padding:7px 12px; font-size:12px; color:var(--text); text-decoration:none; border-radius:7px; cursor:pointer;}
+  .calmenu a:hover{background:var(--border);}
   .statgrid{display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:14px; margin-bottom:24px;}
   .stat{background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:16px;}
   .stat .v{font-size:26px; font-weight:800; color:var(--accent);}
@@ -280,6 +287,7 @@ function renderMatches(){
         <div class="a">${slotLabel(m.away)}</div>
         <div class="meta">${m.g?`Group ${m.g}`:(ROUND_NAME[m.round]||"")} &middot; ${m.venue}</div>
         ${matchEvents(m)}
+        ${played(m)?"":calButton(m)}
       </div>`).join("");
     return `<div class="day"><h2>${label}${d===today?'<span class="today">&#9679; TODAY</span>':''}</h2>${items}</div>`;
   }).join("");
@@ -296,6 +304,69 @@ function matchEvents(m){
     out += `<div class="meta">&#128997; ${reds.map(c=>`${c.player} (${c.team}) ${c.min}'`).join(" &middot; ")}</div>`;
   return out;
 }
+
+// ---------- Add to calendar ----------
+const calTeam = s => isTeam(s) ? s : slotLabel(s);
+function calData(m){
+  const start = localKickoff(m);
+  const end = new Date(start.getTime() + 2*60*60*1000); // 2-hour block
+  const rnd = m.g ? `Group ${m.g}` : (ROUND_NAME[m.round]||"Match");
+  return {
+    start, end,
+    title: `⚽ WC2026: ${calTeam(m.home)} vs ${calTeam(m.away)}`,
+    loc: m.venue || "",
+    desc: `${rnd} — 2026 FIFA World Cup`
+  };
+}
+const calZ = d => d.toISOString().replace(/[-:]/g,"").replace(/\.\d{3}/,"");
+function calButton(m){
+  const c = calData(m);
+  const gp = new URLSearchParams({action:"TEMPLATE", text:c.title, dates:`${calZ(c.start)}/${calZ(c.end)}`, details:c.desc, location:c.loc});
+  const op = new URLSearchParams({path:"/calendar/action/compose", rru:"addevent", subject:c.title, startdt:c.start.toISOString(), enddt:c.end.toISOString(), body:c.desc, location:c.loc});
+  const g = "https://calendar.google.com/calendar/render?"+gp.toString();
+  const o = "https://outlook.live.com/calendar/0/deeplink/compose?"+op.toString();
+  return `<div class="calwrap">
+    <button class="calbtn" onclick="toggleCal(event,${m.m})">&#128197; Add to calendar</button>
+    <div class="calmenu" id="cal-${m.m}" onclick="event.stopPropagation()">
+      <a href="${g}" target="_blank" rel="noopener">Google Calendar</a>
+      <a href="${o}" target="_blank" rel="noopener">Outlook</a>
+      <a onclick="downloadIcs(${m.m})">Apple Calendar</a>
+      <a onclick="downloadIcs(${m.m})">iOS / Download .ics</a>
+    </div>
+  </div>`;
+}
+function icsText(m){
+  const c = calData(m);
+  const esc = s => String(s).replace(/([\\,;])/g,"\\$1").replace(/\n/g,"\\n");
+  return ["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//WC2026//EN","CALSCALE:GREGORIAN","BEGIN:VEVENT",
+    "UID:wc2026-"+m.m+"@worldcup2026",
+    "DTSTAMP:"+calZ(new Date()),
+    "DTSTART:"+calZ(c.start),
+    "DTEND:"+calZ(c.end),
+    "SUMMARY:"+esc(c.title),
+    "DESCRIPTION:"+esc(c.desc),
+    "LOCATION:"+esc(c.loc),
+    "END:VEVENT","END:VCALENDAR"].join("\r\n");
+}
+function downloadIcs(mNum){
+  const m = D.matches.concat(D.knockout||[]).find(x=>x.m===mNum);
+  if(!m) return;
+  const blob = new Blob([icsText(m)], {type:"text/calendar;charset=utf-8"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url; a.download = `wc2026-match-${mNum}.ics`;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url), 1500);
+  document.querySelectorAll(".calmenu.open").forEach(x=>x.classList.remove("open"));
+}
+function toggleCal(ev, mNum){
+  ev.stopPropagation();
+  const menu = document.getElementById("cal-"+mNum);
+  const wasOpen = menu.classList.contains("open");
+  document.querySelectorAll(".calmenu.open").forEach(x=>x.classList.remove("open"));
+  if(!wasOpen) menu.classList.add("open");
+}
+document.addEventListener("click", ()=>document.querySelectorAll(".calmenu.open").forEach(x=>x.classList.remove("open")));
 
 // ---------- third place (actual) ----------
 function renderThirds(){
