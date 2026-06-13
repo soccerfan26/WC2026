@@ -183,6 +183,7 @@
       <table id="lbTable"></table>
       <div class="notice" id="lbNote"></div>
     </div>
+    <div id="lbDetail"></div>
     <div class="legend" style="justify-content:center;">
       <span>Exact score 3</span><span>Correct result 1</span><span>R32 2</span><span>R16 3</span><span>QF 5</span><span>SF 8</span><span>3rd-place game 4</span><span>Final 10</span>
     </div>
@@ -656,7 +657,7 @@ async function loadPool(){
   const snap = await POOL.db.collection("picks").get();
   POOL.lb = snap.docs.map(d=>{
     const p=d.data();
-    return {uid:d.id, username:p.username||"player", champion:p.champion||"",
+    return {uid:d.id, username:p.username||"player", champion:p.champion||"", picks:p,
       n:Object.keys(p.scores||{}).length, nk:Object.keys(p.ko||{}).length, ...scorePicks(p)};
   }).sort((a,b)=>b.pts-a.pts||b.exact-a.exact||a.username.localeCompare(b.username));
   POOL.lbAt = Date.now();
@@ -681,19 +682,57 @@ async function renderStandingsMini(){
       `</table>`;
   }catch(e){ el.style.display="none"; }
 }
+// Full picks view for one player (visible to everyone once entries are locked).
+function playerPicksHTML(r){
+  if(!locked()) return `<div class="card wide-card"><div class="notice">Players' picks stay hidden until entries lock at kickoff.</div></div>`;
+  const p = r.picks||{}, scores = p.scores||{}, ko = p.ko||{};
+  const groupCards = Object.keys(D.groups).map(g=>{
+    const rows = D.matches.filter(m=>m.g===g).map(m=>{
+      const s = scores[m.m];
+      const has = s && s.length===2 && s[0]!=="" && s[1]!=="";
+      const pick = has ? `${+s[0]}&ndash;${+s[1]}` : "&mdash;";
+      let badge="";
+      if(played(m) && has){
+        if(+s[0]===m.hs && +s[1]===m.as) badge=' <b class="hit">+3</b>';
+        else if(Math.sign(s[0]-s[1])===Math.sign(m.hs-m.as)) badge=' <b class="hit">+1</b>';
+        else badge=' <span style="color:var(--muted)">0</span>';
+      }
+      const fin = played(m) ? ` <span style="color:var(--muted)">(${m.hs}&ndash;${m.as})</span>` : "";
+      return `<tr><td class="team">${m.home} v ${m.away}</td><td>${pick}${fin}${badge}</td></tr>`;
+    }).join("");
+    return `<div class="card"><h3>GROUP ${g}</h3><table><tr><th class="team">Match</th><th>Pick (final)</th></tr>${rows}</table></div>`;
+  }).join("");
+  const koRows = D.knockout.filter(k=>isTeam(ko[k.m])).map(k=>{
+    const w = actualWinner(k);
+    const badge = w ? (ko[k.m]===w ? ` <b class="hit">+${KO_PTS[k.round]}</b>` : ' <span style="color:var(--muted)">&#10007;</span>') : "";
+    return `<tr><td>M${k.m}</td><td>${ROUND_NAME[k.round]}</td><td class="team">${F(ko[k.m])}${badge}</td></tr>`;
+  }).join("");
+  return `<div class="card wide-card"><h3>&#128064; ${esc(r.username).toUpperCase()}'S PICKS &mdash; ${r.pts} PTS</h3>
+    <div class="notice">Champion: ${isTeam(r.champion)?F(r.champion):"&mdash;"} &middot; ${r.n}/72 scores &middot; ${r.nk}/32 bracket picks &middot; ${r.exact} exact &middot; ${r.ko} bracket hits</div>
+    ${koRows?`<table style="margin-bottom:12px"><tr><th>Match</th><th>Round</th><th class="team">Picked winner</th></tr>${koRows}</table>`:""}
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px;">${groupCards}</div></div>`;
+}
+
 async function renderLeaderboard(){
-  const tbl=document.getElementById("lbTable"), note=document.getElementById("lbNote");
+  const tbl=document.getElementById("lbTable"), note=document.getElementById("lbNote"), det=document.getElementById("lbDetail");
   if(!POOL.ready){ tbl.innerHTML=""; note.textContent="The pool isn't live yet — Firebase setup pending."; return; }
   note.textContent="Loading…";
   try{
     const rows = await loadPool();
     if(!rows.length){ tbl.innerHTML=""; note.textContent="No brackets submitted yet — be the first!"; return; }
-    note.textContent="";
+    note.textContent = locked() ? "Click a player to view their picks." : "";
     tbl.innerHTML = `<tr><th>#</th><th class="team">Player</th><th>Champion pick</th><th>Scores</th><th>Bracket</th><th>Exact</th><th>KO hits</th><th>Pts</th></tr>` +
-      rows.map((r,i)=>`<tr class="${i===0&&r.pts>0?'q1':''} ${POOL.user&&r.uid===POOL.user.uid?'me':''}">
-        <td>${i+1}</td><td class="team">${esc(r.username)}</td>
+      rows.map((r,i)=>`<tr style="cursor:pointer" data-uid="${r.uid}" class="${i===0&&r.pts>0?'q1':''} ${POOL.user&&r.uid===POOL.user.uid?'me':''}">
+        <td>${i+1}</td><td class="team" style="color:var(--accent)">${esc(r.username)}</td>
         <td>${r.champion?(D.flags[r.champion]||"")+" "+esc(r.champion):"—"}</td>
         <td>${r.n}/72</td><td>${r.nk}/32</td><td>${r.exact}</td><td>${r.ko}</td><td class="pts">${r.pts}</td></tr>`).join("");
+    tbl.querySelectorAll("tr[data-uid]").forEach(tr=>tr.addEventListener("click",()=>{
+      const uid = tr.dataset.uid;
+      if(det.dataset.open===uid){ det.innerHTML=""; det.dataset.open=""; return; }
+      det.dataset.open = uid;
+      det.innerHTML = playerPicksHTML(rows.find(x=>x.uid===uid));
+      det.scrollIntoView({behavior:"smooth", block:"nearest"});
+    }));
   }catch(e){ note.textContent="Couldn't load leaderboard: "+e.message; }
 }
 

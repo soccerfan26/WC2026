@@ -48,7 +48,7 @@ const WC_DATA = {
      scorers:[{player:"Ladislav Krejčí", team:"Czechia", min:59},{player:"Hwang In-beom", team:"South Korea", min:67},{player:"Oh Hyeon-gyu", team:"South Korea", min:80}],
      cards:{red:[], yellow:[{player:"Lee Gi-hyuk", team:"South Korea", min:"90+6"}]}},
     {m:3,  g:"B", date:"2026-06-12", home:"Canada", away:"Bosnia and Herzegovina", venue:"Toronto (BMO Field)", time:"15:00", utc:"2026-06-12T19:00Z", hs:1, as:1,
-     scorers:[{player:"Jovo Lukić", team:"Bosnia and Herzegovina", min:19},{player:"Cyle Larin", team:"Canada", min:78}]},
+     scorers:[{player:"Jovo Lukić", team:"Bosnia and Herzegovina", min:21},{player:"Cyle Larin", team:"Canada", min:78}]},
     {m:4,  g:"D", date:"2026-06-12", home:"USA", away:"Paraguay", venue:"Los Angeles (SoFi Stadium)", time:"18:00", utc:"2026-06-13T01:00Z", hs:null, as:null},
     {m:5,  g:"D", date:"2026-06-13", home:"Australia", away:"Türkiye", venue:"Vancouver (BC Place)", time:"21:00", utc:"2026-06-14T04:00Z", hs:null, as:null},
     {m:6,  g:"B", date:"2026-06-13", home:"Qatar", away:"Switzerland", venue:"SF Bay Area (Levi's Stadium)", time:"12:00", utc:"2026-06-13T19:00Z", hs:null, as:null},
