@@ -7,7 +7,7 @@
 // team values must exactly match the flags keys.
 // lastUpdated drives the "as of" label in the dashboard.
 const WC_DATA = {
-  lastUpdated: "2026-06-12",
+  lastUpdated: "2026-06-13",
 
   groups: {
     A: ["Mexico", "South Africa", "South Korea", "Czechia"],
@@ -49,7 +49,8 @@ const WC_DATA = {
      cards:{red:[], yellow:[{player:"Lee Gi-hyuk", team:"South Korea", min:"90+6"}]}},
     {m:3,  g:"B", date:"2026-06-12", home:"Canada", away:"Bosnia and Herzegovina", venue:"Toronto (BMO Field)", time:"15:00", utc:"2026-06-12T19:00Z", hs:1, as:1,
      scorers:[{player:"Jovo Lukić", team:"Bosnia and Herzegovina", min:21},{player:"Cyle Larin", team:"Canada", min:78}]},
-    {m:4,  g:"D", date:"2026-06-12", home:"USA", away:"Paraguay", venue:"Los Angeles (SoFi Stadium)", time:"18:00", utc:"2026-06-13T01:00Z", hs:null, as:null},
+    {m:4,  g:"D", date:"2026-06-12", home:"USA", away:"Paraguay", venue:"Los Angeles (SoFi Stadium)", time:"18:00", utc:"2026-06-13T01:00Z", hs:4, as:1,
+     scorers:[{player:"Damián Bobadilla (OG)", team:"USA", min:7},{player:"Folarin Balogun", team:"USA", min:31},{player:"Folarin Balogun", team:"USA", min:"45+5"},{player:"Maurício", team:"Paraguay", min:73},{player:"Giovanni Reyna", team:"USA", min:"90+8"}]},
     {m:5,  g:"D", date:"2026-06-13", home:"Australia", away:"Türkiye", venue:"Vancouver (BC Place)", time:"21:00", utc:"2026-06-14T04:00Z", hs:null, as:null},
     {m:6,  g:"B", date:"2026-06-13", home:"Qatar", away:"Switzerland", venue:"SF Bay Area (Levi's Stadium)", time:"12:00", utc:"2026-06-13T19:00Z", hs:null, as:null},
     {m:7,  g:"C", date:"2026-06-13", home:"Brazil", away:"Morocco", venue:"New York/NJ (MetLife Stadium)", time:"18:00", utc:"2026-06-13T22:00Z", hs:null, as:null},
