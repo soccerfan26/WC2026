@@ -7,7 +7,7 @@
 // team values must exactly match the flags keys.
 // lastUpdated drives the "as of" label in the dashboard.
 const WC_DATA = {
-  lastUpdated: "2026-06-14",
+  lastUpdated: "2026-06-15",
 
   groups: {
     A: ["Mexico", "South Africa", "South Korea", "Czechia"],
@@ -66,8 +66,11 @@ const WC_DATA = {
      scorers:[{player:"Virgil van Dijk", team:"Netherlands", min:51},{player:"Keito Nakamura", team:"Japan", min:57},{player:"Crysencio Summerville", team:"Netherlands", min:64},{player:"Daichi Kamada", team:"Japan", min:89}]},
     {m:11, g:"E", date:"2026-06-14", home:"Ivory Coast", away:"Ecuador", venue:"Philadelphia (Lincoln Financial Field)", time:"19:00", utc:"2026-06-14T23:00Z", hs:1, as:0,
      scorers:[{player:"Amad Diallo", team:"Ivory Coast", min:90}]},
-    {m:12, g:"F", date:"2026-06-14", home:"Sweden", away:"Tunisia", venue:"Monterrey (Estadio BBVA)", time:"20:00", utc:"2026-06-15T02:00Z", hs:null, as:null},
-    {m:13, g:"H", date:"2026-06-15", home:"Spain", away:"Cape Verde", venue:"Atlanta (Mercedes-Benz Stadium)", time:"12:00", utc:"2026-06-15T16:00Z", hs:null, as:null},
+    {m:12, g:"F", date:"2026-06-14", home:"Sweden", away:"Tunisia", venue:"Monterrey (Estadio BBVA)", time:"20:00", utc:"2026-06-15T02:00Z", hs:5, as:1,
+     scorers:[{player:"Yasin Ayari", team:"Sweden", min:7},{player:"Alexander Isak", team:"Sweden", min:30},{player:"Omar Rekik", team:"Tunisia", min:43},{player:"Viktor Gyökeres", team:"Sweden", min:59},{player:"Mattias Svanberg", team:"Sweden", min:84},{player:"Yasin Ayari", team:"Sweden", min:"90+6"}],
+     cards:{red:[]}},
+    {m:13, g:"H", date:"2026-06-15", home:"Spain", away:"Cape Verde", venue:"Atlanta (Mercedes-Benz Stadium)", time:"12:00", utc:"2026-06-15T16:00Z", hs:0, as:0,
+     scorers:[]},
     {m:14, g:"G", date:"2026-06-15", home:"Belgium", away:"Egypt", venue:"Seattle (Lumen Field)", time:"12:00", utc:"2026-06-15T19:00Z", hs:null, as:null},
     {m:15, g:"H", date:"2026-06-15", home:"Saudi Arabia", away:"Uruguay", venue:"Miami (Hard Rock Stadium)", time:"18:00", utc:"2026-06-15T22:00Z", hs:null, as:null},
     {m:16, g:"G", date:"2026-06-15", home:"Iran", away:"New Zealand", venue:"Los Angeles (SoFi Stadium)", time:"18:00", utc:"2026-06-16T01:00Z", hs:null, as:null},
