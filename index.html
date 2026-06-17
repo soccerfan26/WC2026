@@ -730,7 +730,11 @@ async function loadPool(){
     const p=d.data();
     return {uid:d.id, username:p.username||"player", champion:p.champion||"", picks:p,
       n:Object.keys(p.scores||{}).length, nk:Object.keys(p.ko||{}).length, ...scorePicks(p)};
-  }).sort((a,b)=>b.pts-a.pts||b.exact-a.exact||a.username.localeCompare(b.username));
+  })
+    // Hide incomplete entries: only players who picked a champion appear in
+    // the pool standings / leaderboard. Their record stays in Firestore.
+    .filter(r=>isTeam(r.champion))
+    .sort((a,b)=>b.pts-a.pts||b.exact-a.exact||a.username.localeCompare(b.username));
   POOL.lbAt = Date.now();
   return POOL.lb;
 }
