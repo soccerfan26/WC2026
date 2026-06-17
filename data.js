@@ -7,7 +7,7 @@
 // team values must exactly match the flags keys.
 // lastUpdated drives the "as of" label in the dashboard.
 const WC_DATA = {
-  lastUpdated: "2026-06-16",
+  lastUpdated: "2026-06-17",
 
   groups: {
     A: ["Mexico", "South Africa", "South Korea", "Czechia"],
@@ -80,8 +80,10 @@ const WC_DATA = {
     {m:17, g:"J", date:"2026-06-16", home:"Austria", away:"Jordan", venue:"SF Bay Area (Levi's Stadium)", time:"21:00", utc:"2026-06-17T04:00Z", hs:null, as:null},
     {m:18, g:"I", date:"2026-06-16", home:"France", away:"Senegal", venue:"New York/NJ (MetLife Stadium)", time:"15:00", utc:"2026-06-16T19:00Z", hs:3, as:1,
      scorers:[{player:"Kylian Mbappé", team:"France", min:66},{player:"Bradley Barcola", team:"France", min:82},{player:"Ibrahim Mbaye", team:"Senegal", min:"90+5"},{player:"Kylian Mbappé", team:"France", min:"90+6"}]},
-    {m:19, g:"I", date:"2026-06-16", home:"Iraq", away:"Norway", venue:"Boston (Gillette Stadium)", time:"18:00", utc:"2026-06-16T22:00Z", hs:null, as:null},
-    {m:20, g:"J", date:"2026-06-16", home:"Argentina", away:"Algeria", venue:"Kansas City (Arrowhead Stadium)", time:"20:00", utc:"2026-06-17T01:00Z", hs:null, as:null},
+    {m:19, g:"I", date:"2026-06-16", home:"Iraq", away:"Norway", venue:"Boston (Gillette Stadium)", time:"18:00", utc:"2026-06-16T22:00Z", hs:1, as:4,
+     scorers:[{player:"Erling Haaland", team:"Norway", min:29},{player:"Aymen Hussein", team:"Iraq", min:39},{player:"Erling Haaland", team:"Norway", min:43},{player:"Leo Østigård", team:"Norway", min:76},{player:"Aymen Hussein (OG)", team:"Norway", min:"90+6"}]},
+    {m:20, g:"J", date:"2026-06-16", home:"Argentina", away:"Algeria", venue:"Kansas City (Arrowhead Stadium)", time:"20:00", utc:"2026-06-17T01:00Z", hs:3, as:0,
+     scorers:[{player:"Lionel Messi", team:"Argentina", min:17},{player:"Lionel Messi", team:"Argentina", min:60},{player:"Lionel Messi", team:"Argentina", min:76}]},
     {m:21, g:"K", date:"2026-06-17", home:"Portugal", away:"DR Congo", venue:"Houston (NRG Stadium)", time:"12:00", utc:"2026-06-17T17:00Z", hs:null, as:null},
     {m:22, g:"L", date:"2026-06-17", home:"England", away:"Croatia", venue:"Dallas (AT&T Stadium)", time:"15:00", utc:"2026-06-17T20:00Z", hs:null, as:null},
     {m:23, g:"L", date:"2026-06-17", home:"Ghana", away:"Panama", venue:"Toronto (BMO Field)", time:"19:00", utc:"2026-06-17T23:00Z", hs:null, as:null},
