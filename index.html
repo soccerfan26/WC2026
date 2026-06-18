@@ -82,16 +82,23 @@
   .subtabs{display:flex; gap:6px; margin:16px 0 14px; justify-content:center;}
   .subtabs button{background:var(--panel); border:1px solid var(--border); color:var(--muted); padding:9px 22px; border-radius:10px; font-weight:700; font-size:13px; cursor:pointer;}
   .subtabs button.active{color:#fff; background:var(--accent); border-color:var(--accent);}
-  .gpick{display:grid; grid-template-columns:1fr 104px 1fr; align-items:center; gap:6px; padding:6px 12px; border-top:1px solid #21262d;}
+  .gpick{display:grid; grid-template-columns:1fr 100px 1fr 58px; grid-template-areas:"home pick away pts" "res res res pts"; align-items:center; gap:4px 8px; padding:8px 12px; border-top:1px solid #21262d;}
   .gpick .tn{font-size:13px; font-weight:600;}
-  .gpick .tn.r{text-align:right;}
-  .gpick .mid2{display:flex; gap:5px; justify-content:center; align-items:center;}
+  .gpick .tn.r{text-align:right; grid-area:home;}
+  .gpick .tn.aw{grid-area:away;}
+  .gpick .mid2{display:flex; gap:5px; justify-content:center; align-items:center; grid-area:pick;}
   .gpick input{width:38px; text-align:center; background:var(--bg); color:var(--text); border:1px solid var(--border); border-radius:6px; padding:5px 2px; font-size:13px; font-weight:700;}
   .gpick input:disabled{opacity:.55;}
-  .gpick .res{grid-column:1/4; text-align:center; font-size:10px; color:var(--muted); padding-bottom:2px;}
-  .gpick .res b.hit{color:var(--green-line);}
-  .predfin{padding:8px 12px; font-size:11px; color:var(--muted); background:var(--panel2); border-top:1px solid var(--border); line-height:1.7;}
+  .gpick .res{grid-area:res; text-align:center; font-size:12px; color:var(--muted); padding-top:3px;}
+  .gpick .res b{color:var(--text); font-weight:800; font-size:13px;}
+  .gpick .ptcol{grid-area:pts; display:flex; align-items:center; justify-content:center;}
+  .gpick .ptpill{min-width:42px; text-align:center; font-size:13px; font-weight:800; padding:6px 4px; border-radius:8px; background:var(--panel2); color:var(--muted); border:1px solid var(--border);}
+  .gpick .ptpill.hit{background:var(--green); color:var(--green-line); border-color:var(--green-line);}
+  .predfin{padding:10px 12px; font-size:11px; color:var(--muted); background:var(--panel2); border-top:1px solid var(--border); line-height:1.7;}
   .predfin b{color:var(--text);}
+  .predfin .gtot{margin-top:5px; padding-top:5px; border-top:1px dashed var(--border); font-size:12px;}
+  .predfin .gtot b{color:var(--green-line); font-size:14px;}
+  .predfin .gtot span{color:var(--muted); font-size:10px;}
   .round{margin-bottom:26px;}
   .round h2{font-size:15px; color:var(--accent); margin-bottom:10px; padding-bottom:4px; border-bottom:1px solid var(--border);}
   .ko{background:var(--panel); border:1px solid var(--border); border-radius:10px; margin-bottom:8px; overflow:hidden;}
@@ -611,15 +618,17 @@ function renderGroupPanel(lock){
   el.innerHTML = Object.keys(D.groups).map(g=>{
     const rows = D.matches.filter(m=>m.g===g).map(m=>{
       const s = PICKS.scores[m.m] || ["",""];
-      let res = "";
+      let res = "", ptCell = "";
       if(played(m)){
-        let badge = "";
-        if(s[0]!==""){
-          if(s[0]===m.hs && s[1]===m.as) badge = ' &middot; <b class="hit">+3 exact</b>';
-          else if(Math.sign(s[0]-s[1])===Math.sign(m.hs-m.as)) badge = ' &middot; <b class="hit">+1 result</b>';
-          else badge = " &middot; 0";
+        res = `<div class="res">Final <b>${m.hs}&ndash;${m.as}</b></div>`;
+        if(s[0]!=="" && s[1]!==""){
+          let pts = 0;
+          if(s[0]===m.hs && s[1]===m.as) pts = 3;
+          else if(Math.sign(s[0]-s[1])===Math.sign(m.hs-m.as)) pts = 1;
+          ptCell = `<div class="ptcol"><span class="ptpill${pts>0?" hit":""}">${pts>0?"+":""}${pts}</span></div>`;
+        } else {
+          ptCell = `<div class="ptcol"><span class="ptpill" style="opacity:.5">&ndash;</span></div>`;
         }
-        res = `<div class="res">Final: ${m.hs}&ndash;${m.as}${badge}</div>`;
       }
       return `<div class="gpick">
         <div class="tn r">${F(m.home)}</div>
@@ -628,7 +637,7 @@ function renderGroupPanel(lock){
           <span>&ndash;</span>
           <input data-m="${m.m}" data-side="1" type="number" min="0" max="20" value="${s[1]}" ${lock?"disabled":""}>
         </div>
-        <div class="tn">${F(m.away)}</div>${res}</div>`;
+        <div class="tn aw">${F(m.away)}</div>${ptCell}${res}</div>`;
     }).join("");
     return `<div class="card"><h3>GROUP ${g}</h3>${rows}<div class="predfin" id="pred-${g}"></div></div>`;
   }).join("");
@@ -650,10 +659,20 @@ const completeScore = s => s && s.length===2 && s[0]!=="" && s[1]!=="";
 function renderPredFinish(g){
   const el = document.getElementById("pred-"+g);
   if(!el) return;
-  const done = D.matches.filter(m=>m.g===g).filter(m=>completeScore(PICKS.scores[m.m])).length;
-  if(done<6){ el.innerHTML = `Predicted finish: <i>fill in all 6 matches (${done}/6)</i>`; return; }
+  const gm = D.matches.filter(m=>m.g===g);
+  // points earned so far from this group's predictions
+  let gp=0, ex=0, rs=0, graded=0;
+  gm.forEach(m=>{
+    if(!played(m) || !completeScore(PICKS.scores[m.m])) return;
+    const s = PICKS.scores[m.m]; graded++;
+    if(s[0]===m.hs && s[1]===m.as){ gp+=3; ex++; }
+    else if(Math.sign(s[0]-s[1])===Math.sign(m.hs-m.as)){ gp+=1; rs++; }
+  });
+  const tot = `<div class="gtot">Group points so far: <b>${gp}</b> <span>(${ex}&times; exact, ${rs}&times; result &middot; ${graded}/6 played)</span></div>`;
+  const done = gm.filter(m=>completeScore(PICKS.scores[m.m])).length;
+  if(done<6){ el.innerHTML = `<div>Predicted finish: <i>fill in all 6 matches (${done}/6)</i></div>${tot}`; return; }
   const t = tableFromScores(g, m=>completeScore(PICKS.scores[m.m])?PICKS.scores[m.m]:null);
-  el.innerHTML = `Predicted finish: &#129351; <b>${t[0].team}</b> &nbsp;&#129352; <b>${t[1].team}</b> &nbsp;&#129353; ${t[2].team} (${t[2].pts} pts)`;
+  el.innerHTML = `<div>Predicted finish: &#129351; <b>${t[0].team}</b> &nbsp;&#129352; <b>${t[1].team}</b> &nbsp;&#129353; ${t[2].team} (${t[2].pts} pts)</div>${tot}`;
 }
 
 function renderBracketPanel(lock){
