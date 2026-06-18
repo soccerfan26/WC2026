@@ -82,20 +82,23 @@
   .subtabs{display:flex; gap:6px; margin:16px 0 14px; justify-content:center;}
   .subtabs button{background:var(--panel); border:1px solid var(--border); color:var(--muted); padding:9px 22px; border-radius:10px; font-weight:700; font-size:13px; cursor:pointer;}
   .subtabs button.active{color:#fff; background:var(--accent); border-color:var(--accent);}
-  .gpick{display:grid; grid-template-columns:1fr 100px 1fr 58px; grid-template-areas:"home pick away pts" "res res res pts"; align-items:center; gap:4px 8px; padding:8px 12px; border-top:1px solid #21262d;}
-  .gpick .tn{font-size:13px; font-weight:600;}
+  .gpick{display:grid; grid-template-columns:1fr 90px 1fr 50px; grid-template-areas:"home pick away pts" "res res res pts"; align-items:center; gap:2px 8px; padding:8px 12px; border-top:1px solid #21262d; min-height:58px; box-sizing:border-box;}
+  .gpick .tn{font-size:13px; font-weight:600; line-height:1.25; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; min-width:0;}
   .gpick .tn.r{text-align:right; grid-area:home;}
   .gpick .tn.aw{grid-area:away;}
   .gpick .mid2{display:flex; gap:5px; justify-content:center; align-items:center; grid-area:pick;}
-  .gpick input{width:38px; text-align:center; background:var(--bg); color:var(--text); border:1px solid var(--border); border-radius:6px; padding:5px 2px; font-size:13px; font-weight:700;}
+  .gpick input{width:36px; text-align:center; background:var(--bg); color:var(--text); border:1px solid var(--border); border-radius:6px; padding:5px 2px; font-size:13px; font-weight:700;}
   .gpick input:disabled{opacity:.55;}
-  .gpick .res{grid-area:res; text-align:center; font-size:12px; color:var(--muted); padding-top:3px;}
+  .gpick .res{grid-area:res; text-align:center; font-size:12px; color:var(--muted); min-height:16px;}
   .gpick .res b{color:var(--text); font-weight:800; font-size:13px;}
   .gpick .ptcol{grid-area:pts; display:flex; align-items:center; justify-content:center;}
-  .gpick .ptpill{min-width:42px; text-align:center; font-size:13px; font-weight:800; padding:6px 4px; border-radius:8px; background:var(--panel2); color:var(--muted); border:1px solid var(--border);}
+  .gpick .ptpill{display:block; width:100%; text-align:center; font-size:13px; font-weight:800; padding:6px 2px; border-radius:8px; background:var(--panel2); color:var(--muted); border:1px solid var(--border);}
   .gpick .ptpill.hit{background:var(--green); color:var(--green-line); border-color:var(--green-line);}
-  .predfin{padding:10px 12px; font-size:11px; color:var(--muted); background:var(--panel2); border-top:1px solid var(--border); line-height:1.7;}
+  #panelGroups .card{display:flex; flex-direction:column;}
+  #panelGroups .card h3{color:#fff;}
+  .predfin{padding:10px 12px; font-size:11px; color:var(--muted); background:var(--panel2); border-top:1px solid var(--border); line-height:1.7; box-sizing:border-box; margin-top:auto;}
   .predfin b{color:var(--text);}
+  .predfin .pffin{min-height:38px;}
   .predfin .gtot{margin-top:5px; padding-top:5px; border-top:1px dashed var(--border); font-size:12px;}
   .predfin .gtot b{color:var(--green-line); font-size:14px;}
   .predfin .gtot span{color:var(--muted); font-size:10px;}
@@ -209,6 +212,10 @@
 <script>
 const D = WC_DATA;
 const F = t => (D.flags[t]||"") + " " + t;
+// Short display names for the picks grid (full names stay in data for flags/standings/scoring).
+const SHORT = {"Bosnia and Herzegovina":"Bosnia","South Africa":"S. Africa","South Korea":"S. Korea","Saudi Arabia":"S. Arabia","New Zealand":"N. Zealand"};
+const shortName = t => SHORT[t] || t;
+const FS = t => (D.flags[t]||"") + " " + shortName(t);
 const isTeam = t => !!D.flags[t];
 const played = m => m.hs !== null && m.as !== null;
 const KO_PTS = {R32:2, R16:3, QF:5, SF:8, "3P":4, F:10};
@@ -618,7 +625,7 @@ function renderGroupPanel(lock){
   el.innerHTML = Object.keys(D.groups).map(g=>{
     const rows = D.matches.filter(m=>m.g===g).map(m=>{
       const s = PICKS.scores[m.m] || ["",""];
-      let res = "", ptCell = "";
+      let res = `<div class="res"></div>`, ptCell = `<div class="ptcol"></div>`;
       if(played(m)){
         res = `<div class="res">Final <b>${m.hs}&ndash;${m.as}</b></div>`;
         if(s[0]!=="" && s[1]!==""){
@@ -631,13 +638,13 @@ function renderGroupPanel(lock){
         }
       }
       return `<div class="gpick">
-        <div class="tn r">${F(m.home)}</div>
+        <div class="tn r">${FS(m.home)}</div>
         <div class="mid2">
           <input data-m="${m.m}" data-side="0" type="number" min="0" max="20" value="${s[0]}" ${lock?"disabled":""}>
           <span>&ndash;</span>
           <input data-m="${m.m}" data-side="1" type="number" min="0" max="20" value="${s[1]}" ${lock?"disabled":""}>
         </div>
-        <div class="tn aw">${F(m.away)}</div>${ptCell}${res}</div>`;
+        <div class="tn aw">${FS(m.away)}</div>${ptCell}${res}</div>`;
     }).join("");
     return `<div class="card"><h3>GROUP ${g}</h3>${rows}<div class="predfin" id="pred-${g}"></div></div>`;
   }).join("");
@@ -670,9 +677,9 @@ function renderPredFinish(g){
   });
   const tot = `<div class="gtot">Group points so far: <b>${gp}</b> <span>(${ex}&times; exact, ${rs}&times; result &middot; ${graded}/6 played)</span></div>`;
   const done = gm.filter(m=>completeScore(PICKS.scores[m.m])).length;
-  if(done<6){ el.innerHTML = `<div>Predicted finish: <i>fill in all 6 matches (${done}/6)</i></div>${tot}`; return; }
+  if(done<6){ el.innerHTML = `<div class="pffin">Predicted finish: <i>fill in all 6 matches (${done}/6)</i></div>${tot}`; return; }
   const t = tableFromScores(g, m=>completeScore(PICKS.scores[m.m])?PICKS.scores[m.m]:null);
-  el.innerHTML = `<div>Predicted finish: &#129351; <b>${t[0].team}</b> &nbsp;&#129352; <b>${t[1].team}</b> &nbsp;&#129353; ${t[2].team} (${t[2].pts} pts)</div>${tot}`;
+  el.innerHTML = `<div class="pffin">Predicted finish: &#129351; <b>${shortName(t[0].team)}</b> &nbsp;&#129352; <b>${shortName(t[1].team)}</b> &nbsp;&#129353; ${shortName(t[2].team)} (${t[2].pts} pts)</div>${tot}`;
 }
 
 function renderBracketPanel(lock){
