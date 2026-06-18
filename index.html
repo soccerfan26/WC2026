@@ -102,17 +102,18 @@
   .predfin .gtot{margin-top:5px; padding-top:5px; border-top:1px dashed var(--border); font-size:12px;}
   .predfin .gtot b{color:var(--green-line); font-size:14px;}
   .predfin .gtot span{color:var(--muted); font-size:10px;}
+  #panelBracket{width:98vw; max-width:98vw; margin-left:calc(50% - 49vw); margin-right:calc(50% - 49vw); padding:0 6px; box-sizing:border-box;}
   .bracket-scroll{overflow-x:auto; overflow-y:hidden; padding:4px 2px 12px;}
-  .bracket{position:relative; display:flex; align-items:stretch; min-width:max-content; margin:0 auto;}
+  .bracket{position:relative; display:flex; align-items:stretch; width:100%; min-width:max-content; margin:0 auto;}
   .bracket > #brkSvg{position:absolute; top:0; left:0; z-index:0; pointer-events:none;}
   .bracket > #brkSvg path{fill:none; stroke:var(--border); stroke-width:2;}
-  .bside{display:flex; align-items:stretch; position:relative; z-index:1;}
-  .bcol{display:flex; flex-direction:column; min-width:150px; padding:0 13px;}
+  .bside{display:flex; align-items:stretch; position:relative; z-index:1; flex:1 1 0; min-width:0;}
+  .bcol{display:flex; flex-direction:column; flex:1 1 0; min-width:150px; max-width:320px; padding:0 13px;}
   .bcol-h{height:24px; font-size:10px; font-weight:700; letter-spacing:.4px; text-transform:uppercase; color:var(--accent); display:flex; align-items:center; justify-content:center; border-bottom:1px solid var(--border); margin-bottom:8px; white-space:nowrap;}
   .bcol-body{flex:1; display:flex; flex-direction:column; justify-content:space-around;}
   .bm{background:var(--panel); border:1px solid var(--border); border-radius:9px; padding:4px; display:flex; flex-direction:column; gap:4px; margin:5px 0;}
   .bm-meta{font-size:9px; color:var(--muted); text-align:center; line-height:1.3;}
-  .bcenter{display:flex; flex-direction:column; justify-content:center; align-items:stretch; position:relative; z-index:1; min-width:172px; padding:0 12px;}
+  .bcenter{display:flex; flex-direction:column; justify-content:center; align-items:stretch; position:relative; z-index:1; flex:0 0 auto; min-width:172px; max-width:240px; padding:0 12px;}
   .bm.final{border-color:var(--accent); box-shadow:0 0 0 1px var(--accent);}
   .bm.final .kobtn{font-size:13px;}
   .bchamp{text-align:center; font-size:11px; color:var(--muted); margin-top:10px;}
@@ -156,7 +157,7 @@
         <button id="stBracket">2&#65039;&#8419; Knockout Bracket</button>
       </div>
       <div id="panelGroups" class="grid"></div>
-      <div id="panelBracket" class="wide-card" style="display:none; margin:0 auto;"></div>
+      <div id="panelBracket" style="display:none;"></div>
       <div class="savebar" id="saveBar">
         <span id="pickCount" style="font-size:12px; color:var(--muted);"></span>
         <button class="btn" id="btnSave">Save my picks</button>
