@@ -7,7 +7,7 @@
 // team values must exactly match the flags keys.
 // lastUpdated drives the "as of" label in the dashboard.
 const WC_DATA = {
-  lastUpdated: "2026-06-18",
+  lastUpdated: "2026-06-19",
 
   groups: {
     A: ["Mexico", "South Africa", "South Korea", "Czechia"],
@@ -98,8 +98,10 @@ const WC_DATA = {
     {m:26, g:"B", date:"2026-06-18", home:"Switzerland", away:"Bosnia and Herzegovina", venue:"Los Angeles (SoFi Stadium)", time:"12:00", utc:"2026-06-18T19:00Z", hs:4, as:1,
      scorers:[{player:"Johan Manzambi", team:"Switzerland", min:74},{player:"Rubén Vargas", team:"Switzerland", min:84},{player:"Johan Manzambi", team:"Switzerland", min:90},{player:"Mahmić", team:"Bosnia and Herzegovina", min:"90+3"},{player:"Granit Xhaka (P)", team:"Switzerland", min:"90+7"}],
      cards:{red:[{player:"Muharemović", team:"Bosnia and Herzegovina", min:80}]}},
-    {m:27, g:"B", date:"2026-06-18", home:"Canada", away:"Qatar", venue:"Vancouver (BC Place)", time:"15:00", utc:"2026-06-18T22:00Z", hs:null, as:null},
-    {m:28, g:"A", date:"2026-06-18", home:"Mexico", away:"South Korea", venue:"Guadalajara (Estadio Akron)", time:"19:00", utc:"2026-06-19T01:00Z", hs:null, as:null},
+    {m:27, g:"B", date:"2026-06-18", home:"Canada", away:"Qatar", venue:"Vancouver (BC Place)", time:"15:00", utc:"2026-06-18T22:00Z", hs:6, as:0,
+     scorers:[{player:"Cyle Larin", team:"Canada", min:16},{player:"Jonathan David", team:"Canada", min:29},{player:"Jonathan David", team:"Canada", min:"45+3"},{player:"Nathan Saliba", team:"Canada", min:64},{player:"Mohamed Al Mannai (OG)", team:"Canada", min:75},{player:"Jonathan David", team:"Canada", min:"90+2"}]},
+    {m:28, g:"A", date:"2026-06-18", home:"Mexico", away:"South Korea", venue:"Guadalajara (Estadio Akron)", time:"19:00", utc:"2026-06-19T01:00Z", hs:1, as:0,
+     scorers:[{player:"Luis Romo", team:"Mexico", min:50}]},
     {m:29, g:"D", date:"2026-06-19", home:"Türkiye", away:"Paraguay", venue:"SF Bay Area (Levi's Stadium)", time:"20:00", utc:"2026-06-20T03:00Z", hs:null, as:null},
     {m:30, g:"D", date:"2026-06-19", home:"USA", away:"Australia", venue:"Seattle (Lumen Field)", time:"12:00", utc:"2026-06-19T19:00Z", hs:null, as:null},
     {m:31, g:"C", date:"2026-06-19", home:"Scotland", away:"Morocco", venue:"Boston (Gillette Stadium)", time:"18:00", utc:"2026-06-19T22:00Z", hs:null, as:null},
