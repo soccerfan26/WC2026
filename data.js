@@ -7,7 +7,7 @@
 // team values must exactly match the flags keys.
 // lastUpdated drives the "as of" label in the dashboard.
 const WC_DATA = {
-  lastUpdated: "2026-06-19",
+  lastUpdated: "2026-06-20",
 
   groups: {
     A: ["Mexico", "South Africa", "South Korea", "Czechia"],
@@ -102,10 +102,15 @@ const WC_DATA = {
      scorers:[{player:"Cyle Larin", team:"Canada", min:16},{player:"Jonathan David", team:"Canada", min:29},{player:"Jonathan David", team:"Canada", min:"45+3"},{player:"Nathan Saliba", team:"Canada", min:64},{player:"Mohamed Al Mannai (OG)", team:"Canada", min:75},{player:"Jonathan David", team:"Canada", min:"90+2"}]},
     {m:28, g:"A", date:"2026-06-18", home:"Mexico", away:"South Korea", venue:"Guadalajara (Estadio Akron)", time:"19:00", utc:"2026-06-19T01:00Z", hs:1, as:0,
      scorers:[{player:"Luis Romo", team:"Mexico", min:50}]},
-    {m:29, g:"D", date:"2026-06-19", home:"Türkiye", away:"Paraguay", venue:"SF Bay Area (Levi's Stadium)", time:"20:00", utc:"2026-06-20T03:00Z", hs:null, as:null},
-    {m:30, g:"D", date:"2026-06-19", home:"USA", away:"Australia", venue:"Seattle (Lumen Field)", time:"12:00", utc:"2026-06-19T19:00Z", hs:null, as:null},
-    {m:31, g:"C", date:"2026-06-19", home:"Scotland", away:"Morocco", venue:"Boston (Gillette Stadium)", time:"18:00", utc:"2026-06-19T22:00Z", hs:null, as:null},
-    {m:32, g:"C", date:"2026-06-19", home:"Brazil", away:"Haiti", venue:"Philadelphia (Lincoln Financial Field)", time:"20:30", utc:"2026-06-20T00:30Z", hs:null, as:null},
+    {m:29, g:"D", date:"2026-06-19", home:"Türkiye", away:"Paraguay", venue:"SF Bay Area (Levi's Stadium)", time:"20:00", utc:"2026-06-20T03:00Z", hs:0, as:1,
+     scorers:[{player:"Matías Galarza", team:"Paraguay", min:2}],
+     cards:{red:[{player:"Miguel Almirón", team:"Paraguay", min:"45+3"}]}},
+    {m:30, g:"D", date:"2026-06-19", home:"USA", away:"Australia", venue:"Seattle (Lumen Field)", time:"12:00", utc:"2026-06-19T19:00Z", hs:2, as:0,
+     scorers:[{player:"Cameron Burgess (OG)", team:"USA", min:11},{player:"Alex Freeman", team:"USA", min:42}]},
+    {m:31, g:"C", date:"2026-06-19", home:"Scotland", away:"Morocco", venue:"Boston (Gillette Stadium)", time:"18:00", utc:"2026-06-19T22:00Z", hs:0, as:1,
+     scorers:[{player:"Ismael Saibari", team:"Morocco", min:2}]},
+    {m:32, g:"C", date:"2026-06-19", home:"Brazil", away:"Haiti", venue:"Philadelphia (Lincoln Financial Field)", time:"20:30", utc:"2026-06-20T00:30Z", hs:3, as:0,
+     scorers:[{player:"Matheus Cunha", team:"Brazil", min:23},{player:"Matheus Cunha", team:"Brazil", min:36},{player:"Vinícius Júnior", team:"Brazil", min:"45+3"}]},
     {m:33, g:"F", date:"2026-06-20", home:"Netherlands", away:"Sweden", venue:"Houston (NRG Stadium)", time:"12:00", utc:"2026-06-20T17:00Z", hs:null, as:null},
     {m:34, g:"E", date:"2026-06-20", home:"Germany", away:"Ivory Coast", venue:"Toronto (BMO Field)", time:"16:00", utc:"2026-06-20T20:00Z", hs:null, as:null},
     {m:35, g:"E", date:"2026-06-20", home:"Ecuador", away:"Curaçao", venue:"Kansas City (Arrowhead Stadium)", time:"19:00", utc:"2026-06-21T00:00Z", hs:null, as:null},
