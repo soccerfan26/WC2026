@@ -7,7 +7,7 @@
 // team values must exactly match the flags keys.
 // lastUpdated drives the "as of" label in the dashboard.
 const WC_DATA = {
-  lastUpdated: "2026-06-20",
+  lastUpdated: "2026-06-21",
 
   groups: {
     A: ["Mexico", "South Africa", "South Korea", "Czechia"],
@@ -115,8 +115,10 @@ const WC_DATA = {
      scorers:[{player:"Brian Brobbey", team:"Netherlands", min:5},{player:"Brian Brobbey", team:"Netherlands", min:17},{player:"Cody Gakpo", team:"Netherlands", min:47},{player:"Cody Gakpo", team:"Netherlands", min:54},{player:"Anthony Elanga", team:"Sweden", min:59},{player:"Crysencio Summerville", team:"Netherlands", min:89}]},
     {m:34, g:"E", date:"2026-06-20", home:"Germany", away:"Ivory Coast", venue:"Toronto (BMO Field)", time:"16:00", utc:"2026-06-20T20:00Z", hs:2, as:1,
      scorers:[{player:"Franck Kessié", team:"Ivory Coast", min:30},{player:"Deniz Undav", team:"Germany", min:68},{player:"Deniz Undav", team:"Germany", min:"90+4"}]},
-    {m:35, g:"E", date:"2026-06-20", home:"Ecuador", away:"Curaçao", venue:"Kansas City (Arrowhead Stadium)", time:"19:00", utc:"2026-06-21T00:00Z", hs:null, as:null},
-    {m:36, g:"F", date:"2026-06-20", home:"Tunisia", away:"Japan", venue:"Monterrey (Estadio BBVA)", time:"22:00", utc:"2026-06-21T04:00Z", hs:null, as:null},
+    {m:35, g:"E", date:"2026-06-20", home:"Ecuador", away:"Curaçao", venue:"Kansas City (Arrowhead Stadium)", time:"19:00", utc:"2026-06-21T00:00Z", hs:0, as:0,
+     scorers:[]},
+    {m:36, g:"F", date:"2026-06-20", home:"Tunisia", away:"Japan", venue:"Monterrey (Estadio BBVA)", time:"22:00", utc:"2026-06-21T04:00Z", hs:0, as:4,
+     scorers:[{player:"Daichi Kamada", team:"Japan", min:4},{player:"Ayase Ueda", team:"Japan", min:31},{player:"Junya Ito", team:"Japan", min:69},{player:"Ayase Ueda", team:"Japan", min:83}]},
     {m:37, g:"H", date:"2026-06-21", home:"Spain", away:"Saudi Arabia", venue:"Atlanta (Mercedes-Benz Stadium)", time:"12:00", utc:"2026-06-21T16:00Z", hs:null, as:null},
     {m:38, g:"G", date:"2026-06-21", home:"Belgium", away:"Iran", venue:"Los Angeles (SoFi Stadium)", time:"12:00", utc:"2026-06-21T19:00Z", hs:null, as:null},
     {m:39, g:"H", date:"2026-06-21", home:"Uruguay", away:"Cape Verde", venue:"Miami (Hard Rock Stadium)", time:"18:00", utc:"2026-06-21T22:00Z", hs:null, as:null},
