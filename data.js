@@ -7,7 +7,7 @@
 // team values must exactly match the flags keys.
 // lastUpdated drives the "as of" label in the dashboard.
 const WC_DATA = {
-  lastUpdated: "2026-06-21",
+  lastUpdated: "2026-06-22",
 
   groups: {
     A: ["Mexico", "South Africa", "South Korea", "Czechia"],
@@ -121,10 +121,15 @@ const WC_DATA = {
      scorers:[{player:"Daichi Kamada", team:"Japan", min:4},{player:"Ayase Ueda", team:"Japan", min:31},{player:"Junya Ito", team:"Japan", min:69},{player:"Ayase Ueda", team:"Japan", min:83}]},
     {m:37, g:"H", date:"2026-06-21", home:"Spain", away:"Saudi Arabia", venue:"Atlanta (Mercedes-Benz Stadium)", time:"12:00", utc:"2026-06-21T16:00Z", hs:4, as:0,
      scorers:[{player:"Lamine Yamal", team:"Spain", min:10},{player:"Mikel Oyarzabal", team:"Spain", min:21},{player:"Mikel Oyarzabal", team:"Spain", min:24},{player:"Hassan Al Tambakti (OG)", team:"Spain", min:48}]},
-    {m:38, g:"G", date:"2026-06-21", home:"Belgium", away:"Iran", venue:"Los Angeles (SoFi Stadium)", time:"12:00", utc:"2026-06-21T19:00Z", hs:null, as:null},
-    {m:39, g:"H", date:"2026-06-21", home:"Uruguay", away:"Cape Verde", venue:"Miami (Hard Rock Stadium)", time:"18:00", utc:"2026-06-21T22:00Z", hs:null, as:null},
-    {m:40, g:"G", date:"2026-06-21", home:"New Zealand", away:"Egypt", venue:"Vancouver (BC Place)", time:"18:00", utc:"2026-06-22T01:00Z", hs:null, as:null},
-    {m:41, g:"J", date:"2026-06-22", home:"Argentina", away:"Austria", venue:"Dallas (AT&T Stadium)", time:"12:00", utc:"2026-06-22T17:00Z", hs:null, as:null},
+    {m:38, g:"G", date:"2026-06-21", home:"Belgium", away:"Iran", venue:"Los Angeles (SoFi Stadium)", time:"12:00", utc:"2026-06-21T19:00Z", hs:0, as:0,
+     scorers:[],
+     cards:{red:[{player:"Nathan Ngoy", team:"Belgium", min:66}]}},
+    {m:39, g:"H", date:"2026-06-21", home:"Uruguay", away:"Cape Verde", venue:"Miami (Hard Rock Stadium)", time:"18:00", utc:"2026-06-21T22:00Z", hs:2, as:2,
+     scorers:[{player:"Kevin Pina", team:"Cape Verde", min:21},{player:"Maxi Araújo", team:"Uruguay", min:44},{player:"Agustín Canobbio", team:"Uruguay", min:"45+6"},{player:"Helio Varela", team:"Cape Verde", min:61}]},
+    {m:40, g:"G", date:"2026-06-21", home:"New Zealand", away:"Egypt", venue:"Vancouver (BC Place)", time:"18:00", utc:"2026-06-22T01:00Z", hs:1, as:3,
+     scorers:[{player:"Finn Surman", team:"New Zealand", min:15},{player:"Mostafa Ziko", team:"Egypt", min:58},{player:"Mohamed Salah", team:"Egypt", min:67},{player:"Trezeguet", team:"Egypt", min:82}]},
+    {m:41, g:"J", date:"2026-06-22", home:"Argentina", away:"Austria", venue:"Dallas (AT&T Stadium)", time:"12:00", utc:"2026-06-22T17:00Z", hs:2, as:0,
+     scorers:[{player:"Lionel Messi", team:"Argentina", min:38},{player:"Lionel Messi", team:"Argentina", min:"90+5"}]},
     {m:42, g:"I", date:"2026-06-22", home:"France", away:"Iraq", venue:"Philadelphia (Lincoln Financial Field)", time:"17:00", utc:"2026-06-22T21:00Z", hs:null, as:null},
     {m:43, g:"I", date:"2026-06-22", home:"Norway", away:"Senegal", venue:"New York/NJ (MetLife Stadium)", time:"20:00", utc:"2026-06-23T00:00Z", hs:null, as:null},
     {m:44, g:"J", date:"2026-06-22", home:"Jordan", away:"Algeria", venue:"SF Bay Area (Levi's Stadium)", time:"20:00", utc:"2026-06-23T03:00Z", hs:null, as:null},
