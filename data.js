@@ -7,7 +7,7 @@
 // team values must exactly match the flags keys.
 // lastUpdated drives the "as of" label in the dashboard.
 const WC_DATA = {
-  lastUpdated: "2026-06-22",
+  lastUpdated: "2026-06-23",
 
   groups: {
     A: ["Mexico", "South Africa", "South Korea", "Czechia"],
