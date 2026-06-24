@@ -7,7 +7,7 @@
 // team values must exactly match the flags keys.
 // lastUpdated drives the "as of" label in the dashboard.
 const WC_DATA = {
-  lastUpdated: "2026-06-23",
+  lastUpdated: "2026-06-24",
 
   groups: {
     A: ["Mexico", "South Africa", "South Korea", "Czechia"],
@@ -136,9 +136,12 @@ const WC_DATA = {
      scorers:[{player:"Marcus Pedersen", team:"Norway", min:43},{player:"Erling Haaland", team:"Norway", min:48},{player:"Ismaila Sarr", team:"Senegal", min:53},{player:"Erling Haaland", team:"Norway", min:58},{player:"Ismaila Sarr", team:"Senegal", min:"90+2"}]},
     {m:44, g:"J", date:"2026-06-22", home:"Jordan", away:"Algeria", venue:"SF Bay Area (Levi's Stadium)", time:"20:00", utc:"2026-06-23T03:00Z", hs:1, as:2,
      scorers:[{player:"Nizar Al-Rashdan", team:"Jordan", min:36},{player:"Nadhir Benbouali", team:"Algeria", min:57},{player:"Amine Gouiri", team:"Algeria", min:82}]},
-    {m:45, g:"K", date:"2026-06-23", home:"Portugal", away:"Uzbekistan", venue:"Houston (NRG Stadium)", time:"12:00", utc:"2026-06-23T17:00Z", hs:null, as:null},
-    {m:46, g:"L", date:"2026-06-23", home:"England", away:"Ghana", venue:"Boston (Gillette Stadium)", time:"16:00", utc:"2026-06-23T20:00Z", hs:null, as:null},
-    {m:47, g:"L", date:"2026-06-23", home:"Panama", away:"Croatia", venue:"Toronto (BMO Field)", time:"19:00", utc:"2026-06-23T23:00Z", hs:null, as:null},
+    {m:45, g:"K", date:"2026-06-23", home:"Portugal", away:"Uzbekistan", venue:"Houston (NRG Stadium)", time:"12:00", utc:"2026-06-23T17:00Z", hs:5, as:0,
+     scorers:[{player:"Cristiano Ronaldo", team:"Portugal", min:6},{player:"Nuno Mendes", team:"Portugal", min:22},{player:"Cristiano Ronaldo", team:"Portugal", min:39},{player:"Abduvohid Nematov (OG)", team:"Portugal", min:60},{player:"Rafael Leão", team:"Portugal", min:87}]},
+    {m:46, g:"L", date:"2026-06-23", home:"England", away:"Ghana", venue:"Boston (Gillette Stadium)", time:"16:00", utc:"2026-06-23T20:00Z", hs:0, as:0,
+     scorers:[]},
+    {m:47, g:"L", date:"2026-06-23", home:"Panama", away:"Croatia", venue:"Toronto (BMO Field)", time:"19:00", utc:"2026-06-23T23:00Z", hs:0, as:1,
+     scorers:[{player:"Ante Budimir", team:"Croatia", min:55}]},
     {m:48, g:"K", date:"2026-06-23", home:"Colombia", away:"DR Congo", venue:"Guadalajara (Estadio Akron)", time:"20:00", utc:"2026-06-24T02:00Z", hs:null, as:null},
     {m:49, g:"B", date:"2026-06-24", home:"Switzerland", away:"Canada", venue:"Vancouver (BC Place)", time:"12:00", utc:"2026-06-24T19:00Z", hs:null, as:null},
     {m:50, g:"B", date:"2026-06-24", home:"Bosnia and Herzegovina", away:"Qatar", venue:"Seattle (Lumen Field)", time:"12:00", utc:"2026-06-24T19:00Z", hs:null, as:null},
