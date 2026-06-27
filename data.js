@@ -7,7 +7,7 @@
 // team values must exactly match the flags keys.
 // lastUpdated drives the "as of" label in the dashboard.
 const WC_DATA = {
-  lastUpdated: "2026-06-25",
+  lastUpdated: "2026-06-26",
 
   groups: {
     A: ["Mexico", "South Africa", "South Korea", "Czechia"],
@@ -168,8 +168,11 @@ const WC_DATA = {
      scorers:[{player:"Auston Trusty", team:"USA", min:3},{player:"Arda Güler", team:"Türkiye", min:10},{player:"Barış Alper Yılmaz", team:"Türkiye", min:31},{player:"Sebastian Berhalter", team:"USA", min:49},{player:"Kaan Ayhan", team:"Türkiye", min:"90+8"}]},
     {m:60, g:"D", date:"2026-06-25", home:"Paraguay", away:"Australia", venue:"SF Bay Area (Levi's Stadium)", time:"19:00", utc:"2026-06-26T02:00Z", hs:0, as:0,
      scorers:[]},
-    {m:61, g:"I", date:"2026-06-26", home:"Norway", away:"France", venue:"Boston (Gillette Stadium)", time:"15:00", utc:"2026-06-26T19:00Z", hs:null, as:null},
-    {m:62, g:"I", date:"2026-06-26", home:"Senegal", away:"Iraq", venue:"Toronto (BMO Field)", time:"15:00", utc:"2026-06-26T19:00Z", hs:null, as:null},
+    {m:61, g:"I", date:"2026-06-26", home:"Norway", away:"France", venue:"Boston (Gillette Stadium)", time:"15:00", utc:"2026-06-26T19:00Z", hs:1, as:4,
+     scorers:[{player:"Ousmane Dembélé", team:"France", min:7},{player:"Ousmane Dembélé", team:"France", min:20},{player:"Thelo Aasgaard", team:"Norway", min:21},{player:"Ousmane Dembélé", team:"France", min:32},{player:"Désiré Doué", team:"France", min:"90+2"}]},
+    {m:62, g:"I", date:"2026-06-26", home:"Senegal", away:"Iraq", venue:"Toronto (BMO Field)", time:"15:00", utc:"2026-06-26T19:00Z", hs:5, as:0,
+     scorers:[{player:"Habib Diarra", team:"Senegal", min:4},{player:"Ismaila Sarr", team:"Senegal", min:56},{player:"Pape Gueye", team:"Senegal", min:59},{player:"Pape Gueye", team:"Senegal", min:71},{player:"Iliman Ndiaye", team:"Senegal", min:82}],
+     cards:{red:[{player:"Rebin Sulaka", team:"Iraq", min:13}]}},
     {m:63, g:"H", date:"2026-06-26", home:"Uruguay", away:"Spain", venue:"Guadalajara (Estadio Akron)", time:"18:00", utc:"2026-06-27T00:00Z", hs:null, as:null},
     {m:64, g:"H", date:"2026-06-26", home:"Cape Verde", away:"Saudi Arabia", venue:"Houston (NRG Stadium)", time:"19:00", utc:"2026-06-27T00:00Z", hs:null, as:null},
     {m:65, g:"G", date:"2026-06-26", home:"New Zealand", away:"Belgium", venue:"Vancouver (BC Place)", time:"20:00", utc:"2026-06-27T03:00Z", hs:null, as:null},
