@@ -7,7 +7,7 @@
 // team values must exactly match the flags keys.
 // lastUpdated drives the "as of" label in the dashboard.
 const WC_DATA = {
-  lastUpdated: "2026-06-26",
+  lastUpdated: "2026-06-27",
 
   groups: {
     A: ["Mexico", "South Africa", "South Korea", "Czechia"],
@@ -173,10 +173,15 @@ const WC_DATA = {
     {m:62, g:"I", date:"2026-06-26", home:"Senegal", away:"Iraq", venue:"Toronto (BMO Field)", time:"15:00", utc:"2026-06-26T19:00Z", hs:5, as:0,
      scorers:[{player:"Habib Diarra", team:"Senegal", min:4},{player:"Ismaila Sarr", team:"Senegal", min:56},{player:"Pape Gueye", team:"Senegal", min:59},{player:"Pape Gueye", team:"Senegal", min:71},{player:"Iliman Ndiaye", team:"Senegal", min:82}],
      cards:{red:[{player:"Rebin Sulaka", team:"Iraq", min:13}]}},
-    {m:63, g:"H", date:"2026-06-26", home:"Uruguay", away:"Spain", venue:"Guadalajara (Estadio Akron)", time:"18:00", utc:"2026-06-27T00:00Z", hs:null, as:null},
-    {m:64, g:"H", date:"2026-06-26", home:"Cape Verde", away:"Saudi Arabia", venue:"Houston (NRG Stadium)", time:"19:00", utc:"2026-06-27T00:00Z", hs:null, as:null},
-    {m:65, g:"G", date:"2026-06-26", home:"New Zealand", away:"Belgium", venue:"Vancouver (BC Place)", time:"20:00", utc:"2026-06-27T03:00Z", hs:null, as:null},
-    {m:66, g:"G", date:"2026-06-26", home:"Egypt", away:"Iran", venue:"Seattle (Lumen Field)", time:"20:00", utc:"2026-06-27T03:00Z", hs:null, as:null},
+    {m:63, g:"H", date:"2026-06-26", home:"Uruguay", away:"Spain", venue:"Guadalajara (Estadio Akron)", time:"18:00", utc:"2026-06-27T00:00Z", hs:0, as:1,
+     scorers:[{player:"Álex Baena", team:"Spain", min:42}],
+     cards:{red:[{player:"Agustín Canobbio", team:"Uruguay", min:"90+"}]}},
+    {m:64, g:"H", date:"2026-06-26", home:"Cape Verde", away:"Saudi Arabia", venue:"Houston (NRG Stadium)", time:"19:00", utc:"2026-06-27T00:00Z", hs:0, as:0,
+     scorers:[]},
+    {m:65, g:"G", date:"2026-06-26", home:"New Zealand", away:"Belgium", venue:"Vancouver (BC Place)", time:"20:00", utc:"2026-06-27T03:00Z", hs:1, as:5,
+     scorers:[{player:"Leandro Trossard", team:"Belgium", min:28},{player:"Leandro Trossard", team:"Belgium", min:50},{player:"Kevin De Bruyne", team:"Belgium", min:66},{player:"Elijah Just", team:"New Zealand", min:84},{player:"Romelu Lukaku", team:"Belgium", min:86},{player:"Alexis Saelemaekers", team:"Belgium", min:"90+4"}]},
+    {m:66, g:"G", date:"2026-06-26", home:"Egypt", away:"Iran", venue:"Seattle (Lumen Field)", time:"20:00", utc:"2026-06-27T03:00Z", hs:1, as:1,
+     scorers:[{player:"Mahmoud Saber", team:"Egypt", min:5},{player:"Ramin Rezaeian", team:"Iran", min:14}]},
     {m:67, g:"L", date:"2026-06-27", home:"Panama", away:"England", venue:"New York/NJ (MetLife Stadium)", time:"17:00", utc:"2026-06-27T21:00Z", hs:null, as:null},
     {m:68, g:"L", date:"2026-06-27", home:"Croatia", away:"Ghana", venue:"Philadelphia (Lincoln Financial Field)", time:"17:00", utc:"2026-06-27T21:00Z", hs:null, as:null},
     {m:69, g:"K", date:"2026-06-27", home:"Colombia", away:"Portugal", venue:"Miami (Hard Rock Stadium)", time:"19:30", utc:"2026-06-27T23:30Z", hs:null, as:null},
