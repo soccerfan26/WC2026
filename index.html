@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>World Cup 2026 Tracker</title>
-<script src="data.js?v=2026-06-27-1334"></script>
+<script src="data.js?v=2026-06-28-0415"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
@@ -49,6 +49,15 @@
   .day{margin-bottom:22px;}
   .day h2{font-size:14px; color:var(--accent); margin-bottom:8px; padding-bottom:4px; border-bottom:1px solid var(--border);}
   .day h2 .today{color:var(--green-line); font-size:11px; margin-left:8px;}
+  .matchgroup{margin-bottom:14px; border:1px solid var(--border); border-radius:11px; overflow:hidden; background:var(--panel);}
+  .matchgroup>summary{cursor:pointer; padding:13px 16px; font-size:15px; font-weight:700; list-style:none; display:flex; align-items:center; gap:10px;}
+  .matchgroup>summary::-webkit-details-marker{display:none;}
+  .matchgroup>summary::before{content:"▸"; color:var(--muted); font-size:13px; transition:transform .15s ease;}
+  .matchgroup[open]>summary::before{transform:rotate(90deg);}
+  .matchgroup>summary:hover{background:var(--panel2);}
+  .matchgroup>summary .cnt{color:var(--muted); font-weight:600; font-size:12px;}
+  .matchgroup .mg-body{padding:10px 14px 2px; border-top:1px solid var(--border);}
+  .matchgroup .day:last-child{margin-bottom:8px;}
   .match{display:grid; grid-template-columns:1fr auto 1fr; align-items:center; background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:10px 14px; margin-bottom:6px; gap:8px;}
   .match .h{text-align:right; font-weight:600;}
   .match .a{text-align:left; font-weight:600;}
@@ -195,11 +204,11 @@
     <div class="card wide-card" id="standingsMini" style="margin-bottom:14px; display:none;"></div>
     <div id="picksUI" style="display:none;">
       <div class="subtabs">
-        <button id="stGroups" class="active">1&#65039;&#8419; Group Stage</button>
-        <button id="stBracket">2&#65039;&#8419; Knockout Bracket</button>
+        <button id="stGroups">1&#65039;&#8419; Group Stage</button>
+        <button id="stBracket" class="active">2&#65039;&#8419; Knockout Bracket</button>
       </div>
-      <div id="panelGroups" class="grid"></div>
-      <div id="panelBracket" style="display:none;"></div>
+      <div id="panelGroups" class="grid" style="display:none;"></div>
+      <div id="panelBracket"></div>
       <div class="savebar" id="saveBar">
         <span id="pickCount" style="font-size:12px; color:var(--muted);"></span>
         <button class="btn" id="btnSave">Save my picks</button>
@@ -336,6 +345,29 @@ function slotLabel(s){
   if(/^W\d+$/.test(s)) return "Winner M"+s.slice(1);
   return s;
 }
+function matchCard(m){
+  const tm = localTime(m);
+  const rnd = m.g ? `Group ${m.g}` : (ROUND_NAME[m.round]||"");
+  return `
+      <div class="match">
+        <div class="h">${slotLabel(m.home)}</div>
+        <div class="mid">${played(m)?`<span class="score">${m.hs} &ndash; ${m.as}</span>${m.w?'<div style="font-size:10px;color:var(--muted)">'+m.w+' on pens</div>':''}`:`<span class="time">${tm}</span>`}</div>
+        <div class="a">${slotLabel(m.away)}</div>
+        <div class="meta">${tm} &middot; ${rnd} &middot; ${m.venue}</div>
+        ${matchEvents(m)}
+        ${played(m)?"":calButton(m)}
+      </div>`;
+}
+function renderDayGroups(ms){
+  const byDate = {};
+  ms.forEach(m=>{ const k=ymd(localKickoff(m)); (byDate[k]=byDate[k]||[]).push(m); });
+  Object.values(byDate).forEach(list=>list.sort((a,b)=>localKickoff(a)-localKickoff(b)));
+  const today = ymd(new Date());
+  return Object.keys(byDate).sort().map(d=>{
+    const label = new Date(d+"T12:00:00").toLocaleDateString("en-US",{weekday:"long",month:"long",day:"numeric"});
+    return `<div class="day"><h2>${label}${d===today?'<span class="today">&#9679; TODAY</span>':''}</h2>${byDate[d].map(matchCard).join("")}</div>`;
+  }).join("");
+}
 function renderMatches(){
   const g = document.getElementById("fGroup").value;
   const s = document.getElementById("fStatus").value;
@@ -345,26 +377,20 @@ function renderMatches(){
   if(s==="played") ms = ms.filter(played);
   if(s==="upcoming") ms = ms.filter(m=>!played(m));
   if(t) ms = ms.filter(m=>(m.home+m.away).toLowerCase().includes(t));
-  const byDate = {};
-  ms.forEach(m=>{ const k=ymd(localKickoff(m)); (byDate[k]=byDate[k]||[]).push(m); });
-  Object.values(byDate).forEach(list=>list.sort((a,b)=>localKickoff(a)-localKickoff(b)));
-  const today = ymd(new Date());
   const el = document.getElementById("matchList");
-  const dates = Object.keys(byDate).sort();
-  if(!dates.length){ el.innerHTML = '<div class="empty">No matches found.</div>'; return; }
-  el.innerHTML = dates.map(d=>{
-    const label = new Date(d+"T12:00:00").toLocaleDateString("en-US",{weekday:"long",month:"long",day:"numeric"});
-    const items = byDate[d].map(m=>`
-      <div class="match">
-        <div class="h">${slotLabel(m.home)}</div>
-        <div class="mid">${played(m)?`<span class="score">${m.hs} &ndash; ${m.as}</span>${m.w?'<div style="font-size:10px;color:var(--muted)">'+m.w+' on pens</div>':''}`:`<span class="time">${localTime(m)}</span>`}</div>
-        <div class="a">${slotLabel(m.away)}</div>
-        <div class="meta">${m.g?`Group ${m.g}`:(ROUND_NAME[m.round]||"")} &middot; ${m.venue}</div>
-        ${matchEvents(m)}
-        ${played(m)?"":calButton(m)}
-      </div>`).join("");
-    return `<div class="day"><h2>${label}${d===today?'<span class="today">&#9679; TODAY</span>':''}</h2>${items}</div>`;
-  }).join("");
+  if(!ms.length){ el.innerHTML = '<div class="empty">No matches found.</div>'; return; }
+  const gs = ms.filter(m=>m.g);            // group-stage matches (have a group letter)
+  const ko = ms.filter(m=>!m.g);           // knockout matches
+  const filtering = !!(g || s || t);       // auto-expand when the user is searching/filtering
+  let html = "";
+  if(gs.length){
+    const allDone = gs.every(played);
+    html += `<details class="matchgroup"${filtering?" open":""}><summary>Group Stage <span class="cnt">${gs.length} matches${allDone?" &middot; completed":""}</span></summary><div class="mg-body">${renderDayGroups(gs)}</div></details>`;
+  }
+  if(ko.length){
+    html += `<details class="matchgroup" open><summary>Knockout Stage <span class="cnt">${ko.length} matches</span></summary><div class="mg-body">${renderDayGroups(ko)}</div></details>`;
+  }
+  el.innerHTML = html;
 }
 
 // Scorer + card lines shown under a played match.
@@ -615,7 +641,7 @@ function resolveBracket(scores, ko){
 }
 
 // --- picks UI ---
-let subTab = "groups";
+let subTab = "bracket";
 function renderPicks(){
   const card = document.getElementById("authCard");
   const ui = document.getElementById("picksUI");
