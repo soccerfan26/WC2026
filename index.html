@@ -126,6 +126,47 @@
   .kobtn:disabled{cursor:default; opacity:.75;}
   .kobtn .pt{font-size:10px; color:var(--green-line); font-weight:800;}
   .savebar{position:sticky; bottom:10px; background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:10px 14px; display:flex; gap:14px; align-items:center; justify-content:center; margin-top:14px; flex-wrap:wrap; z-index:5;}
+  /* ---- Matchup / betting compare ---- */
+  .mu-pick{display:grid; grid-template-columns:1fr 44px 1fr; gap:10px; align-items:center; margin-bottom:18px;}
+  .mu-pick select{width:100%; background:var(--panel); color:var(--text); border:1px solid var(--border); border-radius:10px; padding:11px 12px; font-size:15px; font-weight:700;}
+  .mu-pick .vs{font-size:13px; font-weight:800; color:var(--muted); text-align:center;}
+  .mu-head{display:grid; grid-template-columns:1fr 44px 1fr; gap:10px; align-items:center; margin-bottom:14px;}
+  .mu-head .t{font-size:18px; font-weight:800; line-height:1.2;}
+  .mu-head .ta{text-align:right;} .mu-head .tb{text-align:left;}
+  .mu-head .sub{font-size:11px; color:var(--muted); font-weight:600; margin-top:3px;}
+  .mu-head .vs{text-align:center; font-size:12px; font-weight:800; color:var(--muted);}
+  .cmp{background:var(--panel); border:1px solid var(--border); border-radius:12px; overflow:hidden; margin-bottom:16px;}
+  .cmp h3{padding:9px 14px; font-size:12px; letter-spacing:.5px; background:var(--panel2); border-bottom:1px solid var(--border); color:var(--muted);}
+  .cmprow{display:grid; grid-template-columns:1fr 168px 1fr; align-items:center; border-top:1px solid #21262d; min-height:40px;}
+  .cmprow .ca,.cmprow .cb{padding:8px 14px; font-size:14px; font-weight:700;}
+  .cmprow .ca{text-align:right;} .cmprow .cb{text-align:left;}
+  .cmprow .cl{text-align:center; font-size:10.5px; color:var(--muted); padding:4px 6px; line-height:1.3; text-transform:uppercase; letter-spacing:.3px;}
+  .cmprow .win{color:var(--green-line);}
+  .spark{display:inline-flex; gap:3px; align-items:flex-end; height:30px; width:120px;}
+  .spark.r{flex-direction:row-reverse;}
+  .spark i{flex:1; background:var(--accent); opacity:.65; border-radius:1px; min-height:2px;}
+  .mu-proj{background:var(--panel); border:1px solid var(--accent); border-radius:12px; overflow:hidden; margin-bottom:16px;}
+  .mu-proj h3{padding:10px 14px; font-size:13px; background:#1f6feb22; border-bottom:1px solid var(--border); color:var(--text); letter-spacing:.4px;}
+  .proj-score{text-align:center; padding:16px 16px 6px;}
+  .proj-score .s{font-size:34px; font-weight:800; letter-spacing:1px;}
+  .proj-score .l{font-size:11px; color:var(--muted); margin-top:4px;}
+  .prob3{display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; padding:8px 16px;}
+  .prob3 .pc{background:var(--panel2); border:1px solid var(--border); border-radius:10px; padding:11px 6px; text-align:center;}
+  .prob3 .pc.lead{border-color:var(--green-line); box-shadow:inset 0 0 0 1px var(--green-line);}
+  .prob3 .pc .pv{font-size:21px; font-weight:800;}
+  .prob3 .pc .pl{font-size:10px; color:var(--muted); margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .prob3 .pc .od{font-size:10px; color:var(--accent); margin-top:4px;}
+  .mkt{display:flex; gap:10px; flex-wrap:wrap; justify-content:center; padding:6px 16px 4px;}
+  .mkt .mc{background:var(--panel2); border:1px solid var(--border); border-radius:9px; padding:9px 16px; text-align:center; font-size:11px; color:var(--muted);}
+  .mkt .mc b{display:block; font-size:17px; color:var(--text); margin-bottom:2px;}
+  .lean{margin:10px 16px 0; padding:11px 14px; background:var(--panel2); border-left:3px solid var(--accent); border-radius:8px; font-size:13px; line-height:1.6;}
+  .lean b{color:var(--text);}
+  .ev-in{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; padding:12px 16px 4px;}
+  .ev-in label{font-size:9.5px; color:var(--muted); display:block; margin-bottom:4px; text-transform:uppercase; letter-spacing:.3px;}
+  .ev-in input{width:100%; background:var(--bg); color:var(--text); border:1px solid var(--border); border-radius:7px; padding:8px 9px; font-size:13px;}
+  .ev-out{font-size:12.5px; padding:8px 16px 0; min-height:18px; text-align:center; color:var(--muted);}
+  .ev-out .pos{color:var(--green-line); font-weight:700;} .ev-out .neg{color:var(--red);}
+  .disc{font-size:10px; color:var(--muted); padding:12px 16px 14px; line-height:1.55; font-style:italic;}
 </style>
 </head>
 <body>
@@ -144,6 +185,7 @@
   <button data-tab="matches">Matches</button>
   <button data-tab="thirds">Best 3rds</button>
   <button data-tab="stats">Stats</button>
+  <button data-tab="matchup">Matchup</button>
   <button data-tab="leaderboard">Leaderboard</button>
 </nav>
 
@@ -201,6 +243,15 @@
   <section id="tab-stats" style="display:none;">
     <div class="statgrid" id="statCards"></div>
     <div class="grid" id="statTables"></div>
+  </section>
+
+  <section id="tab-matchup" style="display:none;">
+    <div class="mu-pick">
+      <select id="muA"></select>
+      <span class="vs">VS</span>
+      <select id="muB"></select>
+    </div>
+    <div id="muOut"></div>
   </section>
 
   <section id="tab-leaderboard" style="display:none;">
@@ -886,13 +937,240 @@ async function renderLeaderboard(){
   }catch(e){ note.textContent="Couldn't load leaderboard: "+e.message; }
 }
 
+// ---------- Matchup compare / betting analysis ----------
+const ALL_MATCHES = () => D.matches.concat(D.knockout||[]);
+const muBase = v => parseInt(String(v),10) || 0;            // base minute from 90 or "90+4"
+const cleanName = p => p.replace(/\s*\((P|OG)\)\s*$/,"");
+
+function teamStats(team){
+  const ms = ALL_MATCHES().filter(m=>played(m) && (m.home===team||m.away===team));
+  const st = {team, mp:0,w:0,d:0,l:0,pts:0,gf:0,ga:0,cs:0,fts:0,btts:0,ov15:0,ov25:0,ov35:0,
+    fhFor:0,fhAg:0,shFor:0,shAg:0,earlyFor:0,lateFor:0,lateAg:0,
+    scoredFirst:0,sfWins:0,concededFirst:0,
+    pens:0,ogFor:0,reds:0,yel:0,
+    buckets:[0,0,0,0,0,0], bucketsAg:[0,0,0,0,0,0],
+    scorers:{}, results:[], biggest:null, worst:null};
+  const bidx = mn => mn<=15?0: mn<=30?1: mn<=45?2: mn<=60?3: mn<=75?4:5;
+  ms.sort((a,b)=>localKickoff(a)-localKickoff(b));
+  ms.forEach(m=>{
+    const home = m.home===team;
+    const gf = home? m.hs : m.as, ga = home? m.as : m.hs, opp = home? m.away : m.home, tot=gf+ga;
+    st.mp++; st.gf+=gf; st.ga+=ga;
+    if(gf>ga){st.w++; st.pts+=3; st.results.push("W");}
+    else if(gf<ga){st.l++; st.results.push("L");}
+    else {st.d++; st.pts++; st.results.push("D");}
+    if(ga===0) st.cs++;
+    if(gf===0) st.fts++;
+    if(gf>0 && ga>0) st.btts++;
+    if(tot>=2) st.ov15++; if(tot>=3) st.ov25++; if(tot>=4) st.ov35++;
+    const diff=gf-ga;
+    if(!st.biggest || diff>st.biggest.diff) st.biggest={diff, txt:`${gf}&ndash;${ga} v ${opp}`};
+    if(!st.worst || diff<st.worst.diff) st.worst={diff, txt:`${gf}&ndash;${ga} v ${opp}`};
+    const sc = (m.scorers||[]).slice().sort((a,b)=>muBase(a.min)-muBase(b.min));
+    let firstGoal=null;
+    sc.forEach(s=>{
+      const mn=muBase(s.min); if(firstGoal===null) firstGoal=s.team;
+      if(s.team===team){
+        st.buckets[bidx(mn)]++;
+        if(mn<=45) st.fhFor++; else st.shFor++;
+        if(mn<=15) st.earlyFor++;
+        if(mn>=76) st.lateFor++;
+        if(/\(P\)/.test(s.player)) st.pens++;
+        if(/\(OG\)/.test(s.player)) st.ogFor++;
+        else { const n=cleanName(s.player); st.scorers[n]=(st.scorers[n]||0)+1; }
+      } else {
+        st.bucketsAg[bidx(mn)]++;
+        if(mn<=45) st.fhAg++; else st.shAg++;
+        if(mn>=76) st.lateAg++;
+      }
+    });
+    if(firstGoal===team){ st.scoredFirst++; if(gf>ga) st.sfWins++; }
+    else if(firstGoal){ st.concededFirst++; }
+  });
+  st.results.reverse(); // most recent first
+  st.group=null; st.groupPos=null;
+  for(const g of Object.keys(D.groups)){
+    if(D.groups[g].includes(team)){ st.group=g;
+      const tbl=computeGroup(g), pos=tbl.findIndex(r=>r.team===team);
+      if(pos>=0 && tbl[pos].p>0) st.groupPos=pos+1; break; }
+  }
+  return st;
+}
+function topScorer(st){
+  const e=Object.entries(st.scorers).sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0]));
+  if(!e.length) return {name:"&mdash;", goals:0, distinct:0, share:0};
+  return {name:e[0][0], goals:e[0][1], distinct:e.length, share: st.gf? Math.round(e[0][1]/st.gf*100):0};
+}
+
+// Independent-Poisson projection with shrinkage toward the tournament average.
+function factorial(n){ let f=1; for(let i=2;i<=n;i++) f*=i; return f; }
+function poisson(k,l){ return Math.exp(-l)*Math.pow(l,k)/factorial(k); }
+function leagueGoalAvg(){
+  const pm=ALL_MATCHES().filter(played), g=pm.reduce((s,m)=>s+m.hs+m.as,0);
+  return pm.length ? g/(pm.length*2) : 1.35;
+}
+function projectMatch(A,B){
+  const lg=leagueGoalAvg(), K=3;                            // K = prior weight (small sample → strong shrinkage)
+  const att=s=>(s.gf+lg*K)/(s.mp+K), def=s=>(s.ga+lg*K)/(s.mp+K);
+  let lamA=lg*(att(A)/lg)*(def(B)/lg), lamB=lg*(att(B)/lg)*(def(A)/lg);
+  lamA=Math.max(0.2,Math.min(5,lamA)); lamB=Math.max(0.2,Math.min(5,lamB));
+  const N=8; let pA=0,pD=0,pB=0,ov25=0,btts=0,best={p:0,i:0,j:0};
+  for(let i=0;i<=N;i++) for(let j=0;j<=N;j++){
+    const p=poisson(i,lamA)*poisson(j,lamB);
+    if(i>j)pA+=p; else if(i<j)pB+=p; else pD+=p;
+    if(i+j>=3) ov25+=p;
+    if(i>=1&&j>=1) btts+=p;
+    if(p>best.p) best={p,i,j};
+  }
+  const sum=pA+pD+pB;                                       // renormalise (tail beyond N is tiny)
+  return {lamA,lamB, pA:pA/sum, pD:pD/sum, pB:pB/sum, ov25, btts, best, lg};
+}
+
+const muTeams = () => Object.keys(D.flags).sort((a,b)=>a.localeCompare(b));
+function fillMuSelects(){
+  const opts = muTeams().map(t=>`<option value="${t}">${D.flags[t]} ${t}</option>`).join("");
+  const a=document.getElementById("muA"), b=document.getElementById("muB");
+  a.innerHTML=opts; b.innerHTML=opts; a.selectedIndex=0; b.selectedIndex=1;
+}
+const decOdds = p => p>0 ? (1/p).toFixed(2) : "&mdash;";
+const ordinal = n => n+["th","st","nd","rd"][(n%100>>3^1)&&n%10<4?n%10:0];
+function grpLabel(st){
+  if(!st.groupPos) return st.group? "Group "+st.group : "";
+  return `Group ${st.group} &middot; ${ordinal(st.groupPos)} &middot; ${st.pts} pts`;
+}
+function formHtml(arr){
+  if(!arr.length) return "&mdash;";
+  return arr.slice(0,5).map(r=>`<span style="color:${r==='W'?'var(--green-line)':r==='L'?'var(--red)':'var(--muted)'};font-weight:800">${r}</span>`).join(" ");
+}
+function spark(buckets, right){
+  const mx=Math.max(1,...buckets);
+  return `<div class="spark${right?' r':''}">${buckets.map(v=>`<i style="height:${Math.round(v/mx*100)}%" title="${v} goal(s)"></i>`).join("")}</div>`;
+}
+let muProj=null;
+function cmpRow(label, aVal, bVal, aNum, bNum, higherBetter){
+  let aw="",bw="";
+  if(aNum!=null && bNum!=null && aNum!==bNum){
+    (higherBetter ? aNum>bNum : aNum<bNum) ? aw="win" : bw="win";
+  }
+  return `<div class="cmprow"><div class="ca ${aw}">${aVal}</div><div class="cl">${label}</div><div class="cb ${bw}">${bVal}</div></div>`;
+}
+function renderMatchup(){
+  const out=document.getElementById("muOut"); if(!out) return;
+  const A=document.getElementById("muA").value, B=document.getElementById("muB").value;
+  if(!A||!B){ out.innerHTML=""; return; }
+  if(A===B){ out.innerHTML='<div class="empty">Pick two different teams.</div>'; return; }
+  const a=teamStats(A), b=teamStats(B);
+  if(!a.mp || !b.mp){ out.innerHTML='<div class="empty">Not enough played matches yet for '+(!a.mp?A:B)+'.</div>'; return; }
+  const pct=(n,d)=> d? Math.round(n/d*100)+"%":"&mdash;";
+  const pg =(n,d)=> d?(n/d).toFixed(2):"&mdash;";
+  const ta=topScorer(a), tb=topScorer(b);
+  const avgTotA=(a.gf+a.ga)/a.mp, avgTotB=(b.gf+b.ga)/b.mp;
+
+  const head=`<div class="mu-head">
+    <div class="ta"><div class="t">${D.flags[A]} ${A}</div><div class="sub">${grpLabel(a)}</div></div>
+    <div class="vs">VS</div>
+    <div class="tb"><div class="t">${D.flags[B]} ${B}</div><div class="sub">${grpLabel(b)}</div></div></div>`;
+
+  const formSec=`<div class="cmp"><h3>FORM &amp; RESULTS</h3>
+    ${cmpRow("Played", a.mp, b.mp)}
+    ${cmpRow("Record (W-D-L)", `${a.w}-${a.d}-${a.l}`, `${b.w}-${b.d}-${b.l}`)}
+    ${cmpRow("Points", a.pts, b.pts, a.pts, b.pts, true)}
+    ${cmpRow("Form (recent &rarr; old)", formHtml(a.results), formHtml(b.results))}
+    ${cmpRow("Goal difference", (a.gf-a.ga>0?'+':'')+(a.gf-a.ga), (b.gf-b.ga>0?'+':'')+(b.gf-b.ga), a.gf-a.ga, b.gf-b.ga, true)}
+    ${cmpRow("Best result", a.biggest?a.biggest.txt:"&mdash;", b.biggest?b.biggest.txt:"&mdash;")}
+    ${cmpRow("Worst result", a.worst?a.worst.txt:"&mdash;", b.worst?b.worst.txt:"&mdash;")}</div>`;
+
+  const attSec=`<div class="cmp"><h3>ATTACK</h3>
+    ${cmpRow("Goals for", a.gf, b.gf, a.gf, b.gf, true)}
+    ${cmpRow("Goals / game", pg(a.gf,a.mp), pg(b.gf,b.mp), a.gf/a.mp, b.gf/b.mp, true)}
+    ${cmpRow("Failed to score", pct(a.fts,a.mp), pct(b.fts,b.mp), a.fts/a.mp, b.fts/b.mp, false)}
+    ${cmpRow("Different scorers", ta.distinct, tb.distinct, ta.distinct, tb.distinct, true)}
+    ${cmpRow("Top scorer", `${ta.name} (${ta.goals})`, `${tb.name} (${tb.goals})`)}
+    ${cmpRow("Top-scorer reliance", ta.share+"%", tb.share+"%", ta.share, tb.share, false)}
+    ${cmpRow("Penalties scored", a.pens, b.pens)}</div>`;
+
+  const defSec=`<div class="cmp"><h3>DEFENCE</h3>
+    ${cmpRow("Goals against", a.ga, b.ga, a.ga, b.ga, false)}
+    ${cmpRow("Conceded / game", pg(a.ga,a.mp), pg(b.ga,b.mp), a.ga/a.mp, b.ga/b.mp, false)}
+    ${cmpRow("Clean sheets", `${a.cs} (${pct(a.cs,a.mp)})`, `${b.cs} (${pct(b.cs,b.mp)})`, a.cs/a.mp, b.cs/b.mp, true)}
+    ${cmpRow("Conceded 1st", pct(a.concededFirst,a.mp), pct(b.concededFirst,b.mp), a.concededFirst/a.mp, b.concededFirst/b.mp, false)}
+    ${cmpRow("Late goals conceded (76'+)", a.lateAg, b.lateAg, a.lateAg, b.lateAg, false)}</div>`;
+
+  const timeSec=`<div class="cmp"><h3>GOAL TIMING (for)</h3>
+    <div class="cmprow"><div class="ca">${spark(a.buckets,true)}</div><div class="cl">By phase<br>0-15&middot;16-30&middot;31-45<br>46-60&middot;61-75&middot;76+'</div><div class="cb">${spark(b.buckets)}</div></div>
+    ${cmpRow("1st-half goals", a.fhFor, b.fhFor, a.fhFor, b.fhFor, true)}
+    ${cmpRow("2nd-half goals", a.shFor, b.shFor, a.shFor, b.shFor, true)}
+    ${cmpRow("Early goals (&le;15')", a.earlyFor, b.earlyFor, a.earlyFor, b.earlyFor, true)}
+    ${cmpRow("Late goals (76'+)", a.lateFor, b.lateFor, a.lateFor, b.lateFor, true)}</div>`;
+
+  const betSec=`<div class="cmp"><h3>BETTING TENDENCIES</h3>
+    ${cmpRow("Avg total goals / game", avgTotA.toFixed(2), avgTotB.toFixed(2))}
+    ${cmpRow("Over 2.5 hit rate", pct(a.ov25,a.mp), pct(b.ov25,b.mp), a.ov25/a.mp, b.ov25/b.mp, true)}
+    ${cmpRow("Over 1.5 hit rate", pct(a.ov15,a.mp), pct(b.ov15,b.mp), a.ov15/a.mp, b.ov15/b.mp, true)}
+    ${cmpRow("BTTS hit rate", pct(a.btts,a.mp), pct(b.btts,b.mp), a.btts/a.mp, b.btts/b.mp, true)}
+    ${cmpRow("Scored first", pct(a.scoredFirst,a.mp), pct(b.scoredFirst,b.mp), a.scoredFirst/a.mp, b.scoredFirst/b.mp, true)}
+    ${cmpRow("Win % when scoring first", pct(a.sfWins,a.scoredFirst), pct(b.sfWins,b.scoredFirst), a.scoredFirst?a.sfWins/a.scoredFirst:0, b.scoredFirst?b.sfWins/b.scoredFirst:0, true)}</div>`;
+
+  const discSec=`<div class="cmp"><h3>DISCIPLINE</h3>
+    ${cmpRow("Red cards (own)", a.reds, b.reds, a.reds, b.reds, false)}
+    ${cmpRow("Red cards drawn (opp.)", "&mdash;", "&mdash;")}</div>`;
+
+  // ---- projection ----
+  const pj=projectMatch(a,b); muProj={pA:pj.pA,pD:pj.pD,pB:pj.pB, A, B};
+  const lead = pj.pA>pj.pB && pj.pA>pj.pD ? "A" : (pj.pB>pj.pA && pj.pB>pj.pD ? "B" : "D");
+  const projTot=pj.lamA+pj.lamB;
+  const leanTeam = lead==="A"?A : lead==="B"?B : "a draw";
+  const leanPct = Math.round(100*(lead==="A"?pj.pA:lead==="B"?pj.pB:pj.pD));
+  const ouWord = pj.ov25>=0.5 ? "Over" : "Under";
+  const bttsWord = pj.btts>=0.5 ? "likely" : "unlikely";
+  const proj=`<div class="mu-proj"><h3>&#128302; MODEL PROJECTION</h3>
+    <div class="proj-score"><div class="s">${pj.best.i} &ndash; ${pj.best.j}</div>
+      <div class="l">Most likely scoreline &middot; expected goals ${pj.lamA.toFixed(2)} &ndash; ${pj.lamB.toFixed(2)}</div></div>
+    <div class="prob3">
+      <div class="pc${lead==='A'?' lead':''}"><div class="pv">${Math.round(pj.pA*100)}%</div><div class="pl">${A} win</div><div class="od">fair ${decOdds(pj.pA)}</div></div>
+      <div class="pc${lead==='D'?' lead':''}"><div class="pv">${Math.round(pj.pD*100)}%</div><div class="pl">Draw</div><div class="od">fair ${decOdds(pj.pD)}</div></div>
+      <div class="pc${lead==='B'?' lead':''}"><div class="pv">${Math.round(pj.pB*100)}%</div><div class="pl">${B} win</div><div class="od">fair ${decOdds(pj.pB)}</div></div>
+    </div>
+    <div class="mkt">
+      <div class="mc"><b>${projTot.toFixed(1)}</b>proj. total goals</div>
+      <div class="mc"><b>${Math.round(pj.ov25*100)}%</b>Over 2.5</div>
+      <div class="mc"><b>${Math.round(pj.btts*100)}%</b>BTTS yes</div>
+    </div>
+    <div class="lean">Model leans <b>${leanTeam}</b>${lead==='D'?'':' ('+leanPct+'%)'}. Projected <b>${pj.best.i}&ndash;${pj.best.j}</b>, ~<b>${projTot.toFixed(1)}</b> total goals &rarr; <b>${ouWord} 2.5</b>; both teams to score <b>${bttsWord}</b> (${Math.round(pj.btts*100)}%).</div>
+    <div class="ev-in">
+      <div><label>${A} win &mdash; your odds (dec)</label><input id="evA" type="number" step="0.01" min="1" placeholder="e.g. 2.40"></div>
+      <div><label>Draw &mdash; your odds</label><input id="evD" type="number" step="0.01" min="1" placeholder="e.g. 3.30"></div>
+      <div><label>${B} win &mdash; your odds</label><input id="evB" type="number" step="0.01" min="1" placeholder="e.g. 2.90"></div>
+    </div>
+    <div class="ev-out" id="evOut">Enter your sportsbook's decimal odds above to see the model's edge (expected value).</div>
+    <div class="disc">Model = independent Poisson on tournament goals, shrunk toward the field average (only ~3 group games per team, so treat as directional, not precise). Strength of schedule, injuries, lineups, motivation and rest are not modelled. Fair odds remove the bookmaker margin. Informational only &mdash; not betting advice.</div>
+  </div>`;
+
+  out.innerHTML = head + proj + formSec + attSec + defSec + timeSec + betSec + discSec;
+  ["evA","evD","evB"].forEach(id=>{ const el=document.getElementById(id); if(el) el.addEventListener("input", muEV); });
+}
+function muEV(){
+  if(!muProj) return;
+  const get=id=>{ const v=parseFloat(document.getElementById(id).value); return v>1?v:null; };
+  const parts=[["evA",muProj.pA,muProj.A],["evD",muProj.pD,"Draw"],["evB",muProj.pB,muProj.B]];
+  const out=parts.map(([id,p,name])=>{
+    const o=get(id); if(!o) return null;
+    const ev=(p*o-1)*100;
+    const cls=ev>0?"pos":"neg";
+    return `<span class="${cls}">${name} ${ev>0?'+':''}${ev.toFixed(1)}%</span>`;
+  }).filter(Boolean);
+  document.getElementById("evOut").innerHTML = out.length
+    ? "Model edge (EV per 1 unit): " + out.join(" &middot; ") + (out.some(s=>s.includes('pos'))?" &mdash; positive = model sees value":"")
+    : "Enter your sportsbook's decimal odds above to see the model's edge (expected value).";
+}
+
 // ---------- shell ----------
 function renderAll(){
   document.getElementById("updated").textContent = new Date(D.lastUpdated+"T12:00:00").toLocaleDateString("en-US",{month:"long",day:"numeric",year:"numeric"});
   const total = D.matches.length, done = D.matches.filter(played).length;
   document.getElementById("prog").style.width = (done/total*100)+"%";
   document.getElementById("progLabel").textContent = `Group stage: ${done} of ${total} matches played`;
-  renderGroups(); renderMatches(); renderThirds(); renderStats(); renderPicks();
+  renderGroups(); renderMatches(); renderThirds(); renderStats(); renderMatchup(); renderPicks();
 }
 document.querySelectorAll("nav button").forEach(b=>b.addEventListener("click",()=>{
   document.querySelectorAll("nav button").forEach(x=>x.classList.remove("active"));
@@ -900,6 +1178,7 @@ document.querySelectorAll("nav button").forEach(b=>b.addEventListener("click",()
   document.querySelectorAll("main section").forEach(s=>s.style.display="none");
   document.getElementById("tab-"+b.dataset.tab).style.display="";
   if(b.dataset.tab==="picks") renderPicks();
+  if(b.dataset.tab==="matchup") renderMatchup();
   if(b.dataset.tab==="leaderboard") renderLeaderboard();
 }));
 document.getElementById("stGroups").addEventListener("click",()=>{
@@ -923,6 +1202,8 @@ document.getElementById("tzNote").innerHTML =
 const fg = document.getElementById("fGroup");
 Object.keys(WC_DATA.groups).forEach(g=>fg.insertAdjacentHTML("beforeend",`<option>${g}</option>`));
 ["fGroup","fStatus","fTeam"].forEach(id=>document.getElementById(id).addEventListener("input",renderMatches));
+fillMuSelects();
+["muA","muB"].forEach(id=>document.getElementById(id).addEventListener("change",renderMatchup));
 renderAll();
 </script>
 </body>
