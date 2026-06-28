@@ -201,7 +201,9 @@ const WC_DATA = {
   // Results are recorded directly here: fill hs/as (score after extra time) and w (winner team
   // name — required, since penalty shootouts mean the higher score does not always advance).
   knockout: [
-    {m:73, round:"R32", date:"2026-06-28", home:"South Africa", away:"Canada", venue:"Los Angeles (SoFi Stadium)", time:"12:00", utc:"2026-06-28T19:00Z", hs:null, as:null, w:null},
+    {m:73, round:"R32", date:"2026-06-28", home:"South Africa", away:"Canada", venue:"Los Angeles (SoFi Stadium)", time:"12:00", utc:"2026-06-28T19:00Z", hs:0, as:1, w:"Canada",
+     scorers:[{player:"Stephen Eustáquio", team:"Canada", min:"90+2"}],
+     cards:{red:[], yellow:[{player:"Nathan Saliba", team:"Canada", min:54}]}},
     {m:74, round:"R32", date:"2026-06-29", home:"Germany", away:"Paraguay", venue:"Boston (Gillette Stadium)", time:"16:30", utc:"2026-06-29T20:30Z", hs:null, as:null, w:null},
     {m:75, round:"R32", date:"2026-06-29", home:"Netherlands", away:"Morocco", venue:"Monterrey (Estadio BBVA)", time:"19:00", utc:"2026-06-30T01:00Z", hs:null, as:null, w:null},
     {m:76, round:"R32", date:"2026-06-29", home:"Brazil", away:"Japan", venue:"Houston (NRG Stadium)", time:"12:00", utc:"2026-06-29T17:00Z", hs:null, as:null, w:null},

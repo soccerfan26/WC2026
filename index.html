@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>World Cup 2026 Tracker</title>
-<script src="data.js?v=2026-06-28-0415"></script>
+<script src="data.js?v=2026-06-28-2143"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
@@ -1052,7 +1052,20 @@ function projectMatch(A,B){
   return {lamA,lamB, pA:pA/sum, pD:pD/sum, pB:pB/sum, ov25, btts, best, lg};
 }
 
-const muTeams = () => Object.keys(D.flags).sort((a,b)=>a.localeCompare(b));
+// Teams knocked out in the bracket: the non-winner of any finished knockout match.
+function eliminatedTeams(){
+  const out = new Set();
+  (D.knockout||[]).forEach(k=>{
+    if(k.w && k.hs!=null && k.as!=null){
+      [k.home, k.away].forEach(t=>{ if(D.flags[t] && t!==k.w) out.add(t); });
+    }
+  });
+  return out;
+}
+const muTeams = () => {
+  const elim = eliminatedTeams();
+  return Object.keys(D.flags).filter(t=>!elim.has(t)).sort((a,b)=>a.localeCompare(b));
+};
 function fillMuSelects(){
   const opts = muTeams().map(t=>`<option value="${t}">${D.flags[t]} ${t}</option>`).join("");
   const a=document.getElementById("muA"), b=document.getElementById("muB");
