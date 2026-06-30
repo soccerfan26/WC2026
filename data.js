@@ -7,7 +7,7 @@
 // team values must exactly match the flags keys.
 // lastUpdated drives the "as of" label in the dashboard.
 const WC_DATA = {
-  lastUpdated: "2026-06-28",
+  lastUpdated: "2026-06-30",
 
   groups: {
     A: ["Mexico", "South Africa", "South Korea", "Czechia"],
@@ -204,9 +204,15 @@ const WC_DATA = {
     {m:73, round:"R32", date:"2026-06-28", home:"South Africa", away:"Canada", venue:"Los Angeles (SoFi Stadium)", time:"12:00", utc:"2026-06-28T19:00Z", hs:0, as:1, w:"Canada",
      scorers:[{player:"Stephen Eustáquio", team:"Canada", min:"90+2"}],
      cards:{red:[], yellow:[{player:"Nathan Saliba", team:"Canada", min:54}]}},
-    {m:74, round:"R32", date:"2026-06-29", home:"Germany", away:"Paraguay", venue:"Boston (Gillette Stadium)", time:"16:30", utc:"2026-06-29T20:30Z", hs:null, as:null, w:null},
-    {m:75, round:"R32", date:"2026-06-29", home:"Netherlands", away:"Morocco", venue:"Monterrey (Estadio BBVA)", time:"19:00", utc:"2026-06-30T01:00Z", hs:null, as:null, w:null},
-    {m:76, round:"R32", date:"2026-06-29", home:"Brazil", away:"Japan", venue:"Houston (NRG Stadium)", time:"12:00", utc:"2026-06-29T17:00Z", hs:null, as:null, w:null},
+    {m:74, round:"R32", date:"2026-06-29", home:"Germany", away:"Paraguay", venue:"Boston (Gillette Stadium)", time:"16:30", utc:"2026-06-29T20:30Z", hs:1, as:1, w:"Paraguay",
+     scorers:[{player:"Julio Enciso", team:"Paraguay", min:42},{player:"Kai Havertz", team:"Germany", min:53}],
+     cards:{red:[]}},
+    {m:75, round:"R32", date:"2026-06-29", home:"Netherlands", away:"Morocco", venue:"Monterrey (Estadio BBVA)", time:"19:00", utc:"2026-06-30T01:00Z", hs:1, as:1, w:"Morocco",
+     scorers:[{player:"Cody Gakpo", team:"Netherlands", min:72},{player:"Issa Diop", team:"Morocco", min:"90+1"}],
+     cards:{red:[]}},
+    {m:76, round:"R32", date:"2026-06-29", home:"Brazil", away:"Japan", venue:"Houston (NRG Stadium)", time:"12:00", utc:"2026-06-29T17:00Z", hs:2, as:1, w:"Brazil",
+     scorers:[{player:"Kaishu Sano", team:"Japan", min:29},{player:"Casemiro", team:"Brazil", min:56},{player:"Gabriel Martinelli", team:"Brazil", min:"90+5"}],
+     cards:{red:[]}},
     {m:77, round:"R32", date:"2026-06-30", home:"France", away:"Sweden", venue:"New York/NJ (MetLife Stadium)", time:"17:00", utc:"2026-06-30T21:00Z", hs:null, as:null, w:null},
     {m:78, round:"R32", date:"2026-06-30", home:"Ivory Coast", away:"Norway", venue:"Dallas (AT&T Stadium)", time:"12:00", utc:"2026-06-30T17:00Z", hs:null, as:null, w:null},
     {m:79, round:"R32", date:"2026-06-30", home:"Mexico", away:"Ecuador", venue:"Mexico City (Estadio Azteca)", time:"19:00", utc:"2026-07-01T01:00Z", hs:null, as:null, w:null},
@@ -220,7 +226,7 @@ const WC_DATA = {
     {m:87, round:"R32", date:"2026-07-03", home:"Colombia", away:"Ghana", venue:"Kansas City (Arrowhead Stadium)", time:"20:30", utc:"2026-07-04T01:30Z", hs:null, as:null, w:null},
     {m:88, round:"R32", date:"2026-07-03", home:"Australia", away:"Egypt", venue:"Dallas (AT&T Stadium)", time:"13:00", utc:"2026-07-03T18:00Z", hs:null, as:null, w:null},
     {m:89, round:"R16", date:"2026-07-04", home:"W74", away:"W77", venue:"Philadelphia (Lincoln Financial Field)", time:"17:00", utc:"2026-07-04T21:00Z", hs:null, as:null, w:null},
-    {m:90, round:"R16", date:"2026-07-04", home:"W73", away:"W75", venue:"Houston (NRG Stadium)", time:"12:00", utc:"2026-07-04T17:00Z", hs:null, as:null, w:null},
+    {m:90, round:"R16", date:"2026-07-04", home:"Canada", away:"Morocco", venue:"Houston (NRG Stadium)", time:"12:00", utc:"2026-07-04T17:00Z", hs:null, as:null, w:null},
     {m:91, round:"R16", date:"2026-07-05", home:"W76", away:"W78", venue:"New York/NJ (MetLife Stadium)", time:"16:00", utc:"2026-07-05T20:00Z", hs:null, as:null, w:null},
     {m:92, round:"R16", date:"2026-07-05", home:"W79", away:"W80", venue:"Mexico City (Estadio Azteca)", time:"18:00", utc:"2026-07-06T00:00Z", hs:null, as:null, w:null},
     {m:93, round:"R16", date:"2026-07-06", home:"W83", away:"W84", venue:"Dallas (AT&T Stadium)", time:"14:00", utc:"2026-07-06T19:00Z", hs:null, as:null, w:null},
