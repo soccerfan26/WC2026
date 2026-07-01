@@ -7,7 +7,7 @@
 // team values must exactly match the flags keys.
 // lastUpdated drives the "as of" label in the dashboard.
 const WC_DATA = {
-  lastUpdated: "2026-06-30",
+  lastUpdated: "2026-07-01",
 
   groups: {
     A: ["Mexico", "South Africa", "South Korea", "Czechia"],
@@ -217,7 +217,9 @@ const WC_DATA = {
      scorers:[{player:"Kylian Mbappé", team:"France", min:45},{player:"Bradley Barcola", team:"France", min:53},{player:"Kylian Mbappé", team:"France", min:74}]},
     {m:78, round:"R32", date:"2026-06-30", home:"Ivory Coast", away:"Norway", venue:"Dallas (AT&T Stadium)", time:"12:00", utc:"2026-06-30T17:00Z", hs:1, as:2, w:"Norway",
      scorers:[{player:"Antonio Nusa", team:"Norway", min:39},{player:"Amad Diallo", team:"Ivory Coast", min:74},{player:"Erling Haaland", team:"Norway", min:86}]},
-    {m:79, round:"R32", date:"2026-06-30", home:"Mexico", away:"Ecuador", venue:"Mexico City (Estadio Azteca)", time:"19:00", utc:"2026-07-01T01:00Z", hs:null, as:null, w:null},
+    {m:79, round:"R32", date:"2026-06-30", home:"Mexico", away:"Ecuador", venue:"Mexico City (Estadio Azteca)", time:"19:00", utc:"2026-07-01T01:00Z", hs:2, as:0, w:"Mexico",
+     scorers:[{player:"Julián Quiñones", team:"Mexico", min:22},{player:"Raúl Jiménez", team:"Mexico", min:31}],
+     cards:{red:[{player:"Piero Hincapié", team:"Ecuador", min:"90+"}], yellow:[{player:"Alan Franco", team:"Ecuador", min:"45+1"}]}},
     {m:80, round:"R32", date:"2026-07-01", home:"England", away:"DR Congo", venue:"Atlanta (Mercedes-Benz Stadium)", time:"12:00", utc:"2026-07-01T16:00Z", hs:null, as:null, w:null},
     {m:81, round:"R32", date:"2026-07-01", home:"USA", away:"Bosnia and Herzegovina", venue:"SF Bay Area (Levi's Stadium)", time:"17:00", utc:"2026-07-02T00:00Z", hs:null, as:null, w:null},
     {m:82, round:"R32", date:"2026-07-01", home:"Belgium", away:"Senegal", venue:"Seattle (Lumen Field)", time:"13:00", utc:"2026-07-01T20:00Z", hs:null, as:null, w:null},
@@ -230,7 +232,7 @@ const WC_DATA = {
     {m:89, round:"R16", date:"2026-07-04", home:"Paraguay", away:"France", venue:"Philadelphia (Lincoln Financial Field)", time:"17:00", utc:"2026-07-04T21:00Z", hs:null, as:null, w:null},
     {m:90, round:"R16", date:"2026-07-04", home:"Canada", away:"Morocco", venue:"Houston (NRG Stadium)", time:"12:00", utc:"2026-07-04T17:00Z", hs:null, as:null, w:null},
     {m:91, round:"R16", date:"2026-07-05", home:"Brazil", away:"Norway", venue:"New York/NJ (MetLife Stadium)", time:"16:00", utc:"2026-07-05T20:00Z", hs:null, as:null, w:null},
-    {m:92, round:"R16", date:"2026-07-05", home:"W79", away:"W80", venue:"Mexico City (Estadio Azteca)", time:"18:00", utc:"2026-07-06T00:00Z", hs:null, as:null, w:null},
+    {m:92, round:"R16", date:"2026-07-05", home:"Mexico", away:"W80", venue:"Mexico City (Estadio Azteca)", time:"18:00", utc:"2026-07-06T00:00Z", hs:null, as:null, w:null},
     {m:93, round:"R16", date:"2026-07-06", home:"W83", away:"W84", venue:"Dallas (AT&T Stadium)", time:"14:00", utc:"2026-07-06T19:00Z", hs:null, as:null, w:null},
     {m:94, round:"R16", date:"2026-07-06", home:"W81", away:"W82", venue:"Seattle (Lumen Field)", time:"17:00", utc:"2026-07-07T00:00Z", hs:null, as:null, w:null},
     {m:95, round:"R16", date:"2026-07-07", home:"W86", away:"W88", venue:"Atlanta (Mercedes-Benz Stadium)", time:"12:00", utc:"2026-07-07T16:00Z", hs:null, as:null, w:null},
